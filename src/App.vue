@@ -11,6 +11,8 @@ export default {
 </script>
 
 <style>
+@import "./assets/css/custom.css";
+
 #app {
   margin: 0;
   padding: 0;

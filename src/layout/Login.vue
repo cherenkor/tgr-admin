@@ -1,7 +1,7 @@
 <template>
   <div id="login-page" class="container-fluid">
     <div class="logo">
-      <img src="../assets/tgr_logo_large.svg" alt>
+      <img src="../assets/img/tgr_logo_large.svg" alt>
     </div>
     <div class="login-form">
       <div class="form-group">
@@ -24,18 +24,27 @@
           <input type="password" class="form-control" placeholder="Password">
         </div>
       </div>
-      <button class="btn btn-primary">Enter</button>
+      <button @click="login" class="btn btn-primary w-100">Enter</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Login",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App"
+      username: "",
+      password: ""
     };
+  },
+  computed: {
+    ...mapGetters("auth", ["isAuthenticated"])
+  },
+  methods: {
+    ...mapActions("auth", ["login"])
   }
 };
 </script>
@@ -57,10 +66,5 @@ export default {
 }
 .login-form {
   width: 360px;
-}
-.login-form .btn {
-  width: 100%;
-  background: #7ac0b4;
-  border-color: #7ac0b4;
 }
 </style>

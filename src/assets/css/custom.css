@@ -1,0 +1,22 @@
+/* Override Bootstrap */
+.btn-primary {
+    background: #7AC0B4;
+    border-color: #7AC0B4;
+}
+.btn-primary:hover {
+    background: #4ea797;
+    border: none;
+}
+.btn-primary:not(:disabled):not(.disabled):active {
+    background: #2f9483;
+    border-color: #2f9483;
+}
+.btn-primary.focus, .btn-primary:focus {
+    -webkit-box-shadow: 0 0 0 0.2rem #7AC0B480;
+    box-shadow: 0 0 0 0.2rem #7AC0B480;
+}
+.form-control:focus {
+    border-color: #7AC0B4;
+    -webkit-box-shadow: 0 0 0 0.2rem #7AC0B480;
+    box-shadow: 0 0 0 0.2rem #7AC0B480;
+}

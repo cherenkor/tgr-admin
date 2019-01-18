@@ -10,9 +10,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     modules: {
-        profile,
-        cards,
-        wallets,
-        auth,
+        profile: {
+            namespaced: true,
+            ...profile
+        },
+        cards: {
+            namespaced: true,
+            ...cards
+        },
+        wallets: {
+            namespaced: true,
+            ...wallets
+        },
+        auth: {
+            namespaced: true,
+            ...auth
+        }
     }
 })
