@@ -60,7 +60,7 @@ export default {
 }
 .login-form .btn {
   width: 100%;
-  background: #7ac2b6;
-  border-color: #7ac2b6;
+  background: #7ac0b4;
+  border-color: #7ac0b4;
 }
 </style>
