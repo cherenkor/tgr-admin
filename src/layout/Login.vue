@@ -24,7 +24,7 @@
           <input type="password" class="form-control" placeholder="Password">
         </div>
       </div>
-      <button @click="login" class="btn btn-primary w-100">Enter</button>
+      <button @click="loginUser" class="btn btn-primary w-100">Enter</button>
     </div>
   </div>
 </template>
@@ -33,7 +33,6 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "Login",
   data() {
     return {
       username: "",
@@ -44,12 +43,14 @@ export default {
     ...mapGetters("auth", ["isAuthenticated"])
   },
   methods: {
-    ...mapActions("auth", ["login"])
+    ...mapActions("auth", ["login"]),
+    loginUser() {
+      this.login().then(() => this.$router.push("/cards"));
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #login-page {
   display: flex;
@@ -66,5 +67,15 @@ export default {
 }
 .login-form {
   width: 360px;
+}
+input::placeholder {
+  color: #71748d !important;
+}
+input {
+  color: #3a3a3a !important;
+}
+input:active,
+input:focus {
+  box-shadow: none;
 }
 </style>

@@ -1,11 +1,14 @@
 /* Override Bootstrap */
+.text-grey {
+    color: #9d9d9d;
+}
 .btn-primary {
     background: #7AC0B4;
     border-color: #7AC0B4;
 }
 .btn-primary:hover {
     background: #4ea797;
-    border: none;
+    border-color: #2b7a6c;
 }
 .btn-primary:not(:disabled):not(.disabled):active {
     background: #2f9483;

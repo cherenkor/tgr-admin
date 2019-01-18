@@ -22,6 +22,7 @@ const actions = {
         last_name: 'Kucherenko'
       };
       commit('setAuth', user);
+      resolve();
       // ApiService.post("users/login", { user: credentials })
       //   .then(({ data }) => {
       //     context.commit(SET_AUTH, data.user);

@@ -5,10 +5,10 @@ import store from '@/store/index'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
+import * as icons from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faEnvelope, faLock)
+library.add(icons.faEnvelope, icons.faLock, icons.faSignOutAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
