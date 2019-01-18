@@ -8,8 +8,9 @@
         <div class="mr-4 w-100">
           <h4 class="m-0">{{ transaction.type }}</h4>
           <h6
+            v-if="transaction.description"
             class="m-0 word-break-word"
-          >Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)</h6>
+          >{{ transaction.description }}</h6>
         </div>
         <div class="text-right d-flex align-items-center">
           <h4 class="m-0">{{ transaction.amount }}</h4>

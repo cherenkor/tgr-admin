@@ -6,103 +6,13 @@
       </div>
       <hr>
       <div id="transactions" class="mt-4">
-        <h1>Transactions</h1>
+        <h2 class="text-grey">Last Transactions</h2>
         <div class="transactions-list">
           <a-transaction
             v-for="(transaction, i) in transactions"
             :transaction="transaction"
             :key="i"
           />
-          <!-- <div class="row transaction mb-3">
-            <div class="col-12">
-              <div class="d-flex">
-                <div class="icon-wrap d-flex mr-4 align-items-center">
-                  <font-awesome-icon class="text-red" icon="arrow-alt-circle-up"/>
-                </div>
-                <div class="mr-4 w-100">
-                  <h4 class="m-0">Payment</h4>
-                  <h6
-                    class="m-0 word-break-word"
-                  >Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)</h6>
-                </div>
-                <div class="text-right d-flex align-items-center">
-                  <h4 class="m-0">-$200</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row transaction mb-3">
-            <div class="col-12">
-              <div class="d-flex">
-                <div class="icon-wrap d-flex mr-4 align-items-center">
-                  <font-awesome-icon class="text-red" icon="arrow-alt-circle-up"/>
-                </div>
-                <div class="mr-4 w-100">
-                  <h4 class="m-0">Payment</h4>
-                  <h6
-                    class="m-0 word-break-word"
-                  >Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)</h6>
-                </div>
-                <div class="text-right d-flex align-items-center">
-                  <h4 class="m-0">-$200</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row transaction mb-3">
-            <div class="col-12">
-              <div class="d-flex">
-                <div class="icon-wrap d-flex mr-4 align-items-center">
-                  <font-awesome-icon class="text-green" icon="arrow-alt-circle-down"/>
-                </div>
-                <div class="mr-4 w-100">
-                  <h4 class="m-0">Top-Up</h4>
-                  <h6
-                    class="m-0 word-break-word"
-                  >Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)</h6>
-                </div>
-                <div class="text-right d-flex align-items-center">
-                  <h4 class="m-0">+$200</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row transaction mb-3">
-            <div class="col-12">
-              <div class="d-flex">
-                <div class="icon-wrap d-flex mr-4 align-items-center">
-                  <font-awesome-icon class="text-green" icon="arrow-alt-circle-down"/>
-                </div>
-                <div class="mr-4 w-100">
-                  <h4 class="m-0">Top-Up</h4>
-                  <h6
-                    class="m-0 word-break-word"
-                  >Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)</h6>
-                </div>
-                <div class="text-right d-flex align-items-center">
-                  <h4 class="m-0">+$200</h4>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row transaction mb-3">
-            <div class="col-12">
-              <div class="d-flex">
-                <div class="icon-wrap d-flex mr-4 align-items-center">
-                  <font-awesome-icon class="text-green" icon="arrow-alt-circle-down"/>
-                </div>
-                <div class="mr-4 w-100">
-                  <h4 class="m-0">Top-Up</h4>
-                  <h6
-                    class="m-0 word-break-word"
-                  >Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)</h6>
-                </div>
-                <div class="text-right d-flex align-items-center">
-                  <h4 class="m-0">+$200</h4>
-                </div>
-              </div>
-            </div>
-          </div>-->
         </div>
       </div>
     </div>
@@ -110,8 +20,8 @@
 </template>
 
 <script>
-import ACard from "../components/cards/ACard";
-import ATransaction from "../components/cards/ATransaction";
+import ACard from "../components/ACard";
+import ATransaction from "../components/ATransaction";
 
 export default {
   components: {
@@ -142,27 +52,37 @@ export default {
         {
           isPositive: true,
           type: "Top-Up",
-          amount: "+$200"
+          amount: "+$200",
+          description:
+            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
         },
         {
           isPositive: false,
           type: "Payment",
-          amount: "-$200"
+          amount: "-$200",
+          description:
+            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
         },
         {
           isPositive: false,
           type: "Payment",
-          amount: "-$200"
+          amount: "-$200",
+          description:
+            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
         },
         {
           isPositive: true,
           type: "Top-Up",
-          amount: "+$250"
+          amount: "+$250",
+          description:
+            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
         },
         {
           isPositive: true,
           type: "Top-Up",
-          amount: "+$1700"
+          amount: "+$1700",
+          description:
+            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
         }
       ]
     };
@@ -179,20 +99,4 @@ export default {
 </script>
 
 <style scoped>
-.transactions-list {
-}
-.transaction {
-  cursor: pointer;
-  padding: 18px 10px;
-  border-radius: 0.5rem;
-  background-color: #fff;
-  box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-.transaction:hover {
-  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.25), 0 8px 8px rgba(0, 0, 0, 0.22);
-}
-.icon-wrap {
-  font-size: 24px;
-}
 </style>

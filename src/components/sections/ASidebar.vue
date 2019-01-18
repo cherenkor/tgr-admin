@@ -46,9 +46,26 @@
                 <span class="ml-2">Contact Us</span>
               </router-link>
             </li>
+            <li class="nav-item">
+              <a
+                href="https://drive.google.com/file/d/0BymYUHpBDWYZYXo0Vmh4Z1JpU28/view"
+                target="_blank"
+                class="nav-link d-lg-none d-xl-none"
+              >
+                <font-awesome-icon icon="envelope"/>
+                <span class="ml-2">Terms & Conditions</span>
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
+    </div>
+    <div class="p-4 d-none d-lg-block d-xl-block">
+      <a
+        href="https://drive.google.com/file/d/0BymYUHpBDWYZYXo0Vmh4Z1JpU28/view"
+        target="_blank"
+        class="terms text-white nav-item"
+      >Terms & Conditions</a>
     </div>
   </div>
 </template>
@@ -58,4 +75,20 @@ export default {};
 </script>
 
 <style scoped>
+.nav-left-sidebar {
+  height: calc(100% - 60px);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.terms {
+  padding: 12px;
+}
+.terms:hover {
+  width: 236px;
+  color: #fff;
+  background-color: #15161d;
+  padding: 12px;
+  border-radius: 2px;
+}
 </style>

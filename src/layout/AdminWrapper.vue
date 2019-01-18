@@ -4,7 +4,6 @@
     <a-sidebar/>
     <div class="dashboard-wrapper">
       <component v-bind:is="currentPage"></component>
-      <!-- <a-footer/> -->
     </div>
   </div>
 </template>
@@ -17,7 +16,6 @@ import Faq from "./FAQ";
 import ContactUs from "./ContactUs";
 import ASidebar from "../components/sections/ASidebar";
 import ANavbar from "../components/sections/ANavbar";
-import AFooter from "../components/sections/AFooter";
 
 export default {
   components: {
@@ -27,8 +25,7 @@ export default {
     Faq,
     ContactUs,
     ASidebar,
-    ANavbar,
-    AFooter
+    ANavbar
   },
   data() {
     return {

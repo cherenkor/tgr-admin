@@ -3,7 +3,7 @@
     <div class="card shadow">
       <div @click="selectCard" class="card-body text-center">
         <div class="card-logo">
-          <img src="../../assets/img/tgr_logo_large.svg" alt>
+          <img src="../assets/img/tgr_logo_large.svg" alt>
         </div>
         <div class="card-balance">
           <h5 class="text-grey m-0">Balance</h5>
@@ -39,7 +39,7 @@ export default {
   props: {
     card: {
       required: true,
-      defualt: ""
+      default: ""
     }
   },
   methods: {

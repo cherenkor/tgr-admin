@@ -21,6 +21,10 @@
     box-shadow: 0 0 0 0.2rem #7AC0B480;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 /* Colors */
 .text-grey {
     color: #9d9d9d;
