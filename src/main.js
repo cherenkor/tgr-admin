@@ -5,10 +5,10 @@ import store from '@/store/index'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import * as icons from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope, faLock, faSignOutAlt, faCog, faShieldAlt, faPlus, faCreditCard, faWallet, faPercent, faBookOpen, faArrowAltCircleUp, faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(icons.faEnvelope, icons.faLock, icons.faSignOutAlt)
+library.add(faEnvelope, faLock, faSignOutAlt, faCog, faShieldAlt, faPlus, faCreditCard, faWallet, faPercent, faBookOpen, faArrowAltCircleUp, faArrowAltCircleDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

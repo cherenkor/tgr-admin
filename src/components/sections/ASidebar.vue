@@ -18,27 +18,32 @@
           <ul class="navbar-nav flex-column">
             <li class="nav-item">
               <router-link to="/cards" class="nav-link">
-                <i class="fa fa-fw fa-rocket"></i>TGR Cards
+                <font-awesome-icon icon="credit-card"/>
+                <span class="ml-2">TGR Cards</span>
               </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/wallets" class="nav-link">
-                <i class="fa fa-fw fa-rocket"></i>TGR Wallets
+                <font-awesome-icon icon="wallet"/>
+                <span class="ml-2">TGR Wallets</span>
               </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/fees-limits" class="nav-link">
-                <i class="fa fa-fw fa-rocket"></i>Fees & Limits
+                <font-awesome-icon icon="percent"/>
+                <span class="ml-2">Fees & Limits</span>
               </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/faq" class="nav-link">
-                <i class="fa fa-fw fa-rocket"></i>FAQ
+                <font-awesome-icon icon="book-open"/>
+                <span class="ml-2">FAQ</span>
               </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/contact-us" class="nav-link">
-                <i class="fa fa-fw fa-rocket"></i>Contact Us
+                <font-awesome-icon icon="envelope"/>
+                <span class="ml-2">Contact Us</span>
               </router-link>
             </li>
           </ul>

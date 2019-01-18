@@ -2,12 +2,9 @@
   <div class="dashboard-main-wrapper">
     <a-navbar/>
     <a-sidebar/>
-    <!-- ============================================================== -->
-    <!-- wrapper  -->
-    <!-- ============================================================== -->
     <div class="dashboard-wrapper">
       <component v-bind:is="currentPage"></component>
-      <a-footer/>
+      <!-- <a-footer/> -->
     </div>
   </div>
 </template>

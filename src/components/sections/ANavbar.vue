@@ -62,6 +62,11 @@ export default {
   cursor: pointer;
 }
 #logout .fa-sign-out-alt {
-  font-size: 16px;
+  font-size: 18px;
+  transition: all 0.1s;
+}
+#logout .fa-sign-out-alt:hover {
+  transform: scale(1.2);
+  color: #f2a181;
 }
 </style>

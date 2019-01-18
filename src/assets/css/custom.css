@@ -1,7 +1,4 @@
 /* Override Bootstrap */
-.text-grey {
-    color: #9d9d9d;
-}
 .btn-primary {
     background: #7AC0B4;
     border-color: #7AC0B4;
@@ -22,4 +19,23 @@
     border-color: #7AC0B4;
     -webkit-box-shadow: 0 0 0 0.2rem #7AC0B480;
     box-shadow: 0 0 0 0.2rem #7AC0B480;
+}
+
+/* Colors */
+.text-grey {
+    color: #9d9d9d;
+}
+.text-coral {
+    color: #7ac0b4;
+}
+.text-orange {
+    color: #f2a181;
+}
+
+/* Text */
+.word-break-all {
+    word-break: break-all;
+}
+.word-break-word {
+    word-break: break-word;
 }
