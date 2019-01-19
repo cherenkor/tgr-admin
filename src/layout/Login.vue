@@ -11,7 +11,7 @@
               <font-awesome-icon icon="envelope"/>
             </span>
           </div>
-          <input type="text" class="form-control" placeholder="Username">
+          <input v-model="username" type="text" class="form-control" placeholder="Username">
         </div>
       </div>
       <div class="form-group">
@@ -21,7 +21,7 @@
               <font-awesome-icon icon="lock"/>
             </span>
           </div>
-          <input type="password" class="form-control" placeholder="Password">
+          <input v-model="password" type="password" class="form-control" placeholder="Password">
         </div>
       </div>
       <button @click="loginUser" class="btn btn-primary w-100">Enter</button>
@@ -45,7 +45,12 @@ export default {
   methods: {
     ...mapActions("auth", ["login"]),
     loginUser() {
-      this.login().then(() => this.$router.push("/cards"));
+      if (!this.username || !this.password) return;
+      const data = {
+        login: this.username,
+        password: this.password
+      };
+      this.login(data).then(() => this.$router.push("/cards"));
     }
   }
 };

@@ -1,8 +1,11 @@
+import axios from 'axios'
+import config from '../config/index.js'
+const { baseURL } = config;
+
 const state = {
   errors: null,
   user: {},
   isAuthenticated: false
-  // isAuthenticated: !!JwtService.getToken()
 };
 
 const getters = {
@@ -10,45 +13,27 @@ const getters = {
     return state.user;
   },
   isAuthenticated(state) {
-    return state.isAuthenticated;
+    return state.isAuthenticated || localStorage.getItem('token');
   }
 };
 
 const actions = {
   login({ commit }, credentials) {
-    return new Promise(resolve => {
-      const user = {
-        first_name: 'Sergey',
-        last_name: 'Kucherenko'
-      };
-      commit('setAuth', user);
-      resolve();
-      // ApiService.post("users/login", { user: credentials })
-      //   .then(({ data }) => {
-      //     context.commit(SET_AUTH, data.user);
-      //     resolve(data);
-      //   })
-      //   .catch(({ response }) => {
-      //     context.commit(SET_ERROR, response.data.errors);
-      //   });
-    });
+    return axios.post(baseURL + '/api/client/auth/login', credentials).then(res => {
+      commit('setAuth', res.data);
+      return res;
+    })
+      .catch(console.log);
   },
   logout({ commit }) {
-    commit(PURGE_AUTH);
+    return axios.post(baseURL + '/api/client/auth/logout').then(res => {
+      commit('purgeAuth');
+      return res;
+    })
+      .catch(console.log);
   },
   checkAuth({ commit }) {
-    // if (JwtService.getToken()) {
-    ApiService.setHeader();
-    ApiService.get("user")
-      .then(({ data }) => {
-        commit(SET_AUTH, data.user);
-      })
-      .catch(({ response }) => {
-        commit(SET_ERROR, response.data.errors);
-      });
-    // } else {
-    //   context.commit(PURGE_AUTH);
-    // }
+
   },
   updateUser({ commit }, payload) {
     const { email, username, password, image, bio } = payload;
@@ -73,17 +58,19 @@ const mutations = {
   setError(state, error) {
     state.errors = error;
   },
-  setAuth(state, user) {
+  setAuth(state, { token, user }) {
     state.isAuthenticated = true;
     state.user = user;
-    state.errors = {};
-    // JwtService.saveToken(state.user.token);
+    const name = `${user.title}. ${user.first_name} ${user.last_name}`;
+    localStorage.setItem('name', name);
+    localStorage.setItem('token', token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   },
   purgeAuth(state) {
     state.isAuthenticated = false;
     state.user = {};
-    state.errors = {};
-    // JwtService.destroyToken();
+    localStorage.removeItem('name');
+    localStorage.removeItem('token');
   }
 };
 

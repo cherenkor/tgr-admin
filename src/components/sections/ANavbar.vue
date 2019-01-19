@@ -31,15 +31,18 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
-      username: "Kucherenko Sergey"
+      username: localStorage.getItem("name")
     };
   },
   methods: {
+    ...mapActions("auth", ["logout"]),
     logoutUser() {
-      this.$router.push("/");
+      this.logout().finally(() => this.$router.push("/"));
     }
   }
 };
