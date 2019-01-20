@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+import { filter } from "lodash";
 import ACard from "../components/ACard";
 import ATransaction from "../components/ATransaction";
 
@@ -30,70 +32,49 @@ export default {
   },
   data() {
     return {
-      cards: [
-        {
-          id: 1,
-          balance: 200,
-          number: "5232 **** **** 4372",
-          status: "active",
-          expires: "11/2042",
-          selected: true
-        },
-        {
-          id: 2,
-          balance: 320,
-          number: "4112 **** **** 4372",
-          status: "blocked",
-          expires: "12/2022",
-          selected: false
-        }
-      ],
-      transactions: [
-        {
-          isPositive: true,
-          type: "Top-Up",
-          amount: "+$200",
-          description:
-            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
-        },
-        {
-          isPositive: false,
-          type: "Payment",
-          amount: "-$200",
-          description:
-            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
-        },
-        {
-          isPositive: false,
-          type: "Payment",
-          amount: "-$200",
-          description:
-            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
-        },
-        {
-          isPositive: true,
-          type: "Top-Up",
-          amount: "+$250",
-          description:
-            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
-        },
-        {
-          isPositive: true,
-          type: "Top-Up",
-          amount: "+$1700",
-          description:
-            "Fin: FAEFVQ$532TWETW$TERYWeSGRGTHERSHEWRHWEWER523452 SDGAEG(TxnId:5234623463) (320.0EUR)"
-        }
-      ]
+      cards: [],
+      transactions: [],
+      transactionsPage: 1
     };
   },
+  mounted() {
+    this.loadCards().then(cards => {
+      const loadCardTransactionsData = {
+        id: cards[0].id,
+        page: this.transactionsPage
+      };
+      this.loadCardTransactions(loadCardTransactionsData).then(transactions => {
+        this.transactions = transactions.map(action => {
+          action.isPositive = action.amount >= 0;
+          action.type = action.amount >= 0 ? "Top-Up" : "Payment";
+          action.amount =
+            action.amount >= 0 ? "+" + action.amount : action.amount;
+        });
+      });
+      this.cards = cards.map(card => {
+        card.status = "active";
+        card.balance = "0";
+        return card;
+      });
+    });
+  },
+  computed: {
+    // ...mapGetters("cards", ["transactions"])
+  },
   methods: {
+    ...mapActions("cards", ["loadCards", "loadCardTransactions"]),
     selectCard(selectedCard) {
+      const loadCardTransactionsData = {
+        id: selectedCard.id,
+        page: this.transactionsPage
+      };
+      this.transactions = this.loadCardTransactions(loadCardTransactionsData);
       this.cards = this.cards.map(card => {
         card.selected = card.id === selectedCard.id;
         return card;
       });
-    }
+    },
+    getCards() {}
   }
 };
 </script>

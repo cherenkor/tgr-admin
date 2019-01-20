@@ -10,11 +10,11 @@
           <h2 class="text-white mt-0">${{ card.balance }}</h2>
         </div>
         <div class="card-number">
-          <h3 class="text-white m-0">{{ card.number }}</h3>
+          <h3 class="text-white m-0">{{ card.pan }}</h3>
         </div>
         <div class="mt-4 card-status d-flex justify-between w-100">
           <span class="text-capitalize">{{ card.status }}</span>
-          <span class="text-grey">Expires: {{ card.expires }}</span>
+          <span class="text-grey">Expires: {{ card.exp_date }}</span>
         </div>
       </div>
     </div>

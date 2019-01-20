@@ -2,12 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/layout/Login'
 import AdminWrapper from '@/layout/AdminWrapper'
-import axios from 'axios'
 
 const ifNotAuthenticated = (to, from, next) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  if (localStorage.getItem('token')) {
     next('/cards')
     return
   }

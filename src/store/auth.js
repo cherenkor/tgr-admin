@@ -21,7 +21,7 @@ const actions = {
   login({ commit }, credentials) {
     return axios.post(baseURL + '/api/client/auth/login', credentials).then(res => {
       commit('setAuth', res.data);
-      return res;
+      return res.data;
     })
       .catch(console.log);
   },

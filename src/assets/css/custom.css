@@ -43,3 +43,7 @@
 .word-break-word {
     word-break: break-word;
 }
+
+input:focus {
+    color: #7ac0b4;
+}
