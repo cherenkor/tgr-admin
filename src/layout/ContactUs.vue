@@ -18,12 +18,12 @@
               <input type="text" class="form-control" id="form-subject" placeholder="Subject">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control" id="form-email" placeholder="Email Address">
+              <input type="email" class="form-control" id="form-email" placeholder="Email">
             </div>
             <div class="form-group">
               <textarea class="form-control" id="form-message" placeholder="Message"></textarea>
             </div>
-            <button class="btn btn-primary mt-2" type="submit">Send</button>
+            <button @click.prevent class="btn btn-primary mt-2" type="submit">Send</button>
           </form>
         </div>
       </div>
@@ -52,5 +52,18 @@ export default {
 }
 .my-form .form-control {
   border-radius: 0;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #71748d !important;
+}
+
+input,
+input:focus,
+textarea,
+textarea:focus {
+  color: #3a3a3a !important;
+  box-shadow: none;
 }
 </style>
