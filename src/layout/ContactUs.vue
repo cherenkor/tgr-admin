@@ -11,6 +11,9 @@
         <div class="col-md-6">
           <form class="my-form">
             <h2 class="mt-2 mb-4">Contact Us</h2>
+            <div class="d-flex mt-4 mb-4">
+              <a id="phone" href="tel:+4402034880005">+44 (0) 203 4880 005</a>
+            </div>
             <div class="form-group">
               <input type="email" class="form-control" id="form-name" placeholder="Name">
             </div>
@@ -24,7 +27,7 @@
               <textarea class="form-control" id="form-message" placeholder="Message"></textarea>
             </div>
             <button @click.prevent class="btn btn-primary mt-2" type="submit">Send</button>
-          </form>
+          </form><
         </div>
       </div>
     </div>
@@ -52,6 +55,10 @@ export default {
 }
 .my-form .form-control {
   border-radius: 0;
+}
+
+#phone {
+  font-size: 1.1rem;
 }
 
 input::placeholder,

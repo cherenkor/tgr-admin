@@ -20,6 +20,9 @@
     -webkit-box-shadow: 0 0 0 0.2rem #7AC0B480;
     box-shadow: 0 0 0 0.2rem #7AC0B480;
 }
+a:hover {
+    color: #f2a181;
+}
 
 .pointer {
     cursor: pointer;
