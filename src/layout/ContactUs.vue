@@ -8,12 +8,27 @@
           </div>
         </div>
         <br>
-        <div class="col-md-6">
-          <form class="my-form">
+        <div id="credentials" class="col-md-6">
+          <h2 class="mb-4">Contacts</h2>
+          <div class="m-3">
+            <h3 class="mb-0">Phone, Whatsapp, Telegram:</h3>
+            <a id="phone" href="tel:+4402034880005">+44 (0) 203 4880 005</a>
+          </div>
+          <div class="m-3">
+            <h3 class="mb-0">Address:</h3>
+            <span
+              @click="copyAddress"
+              ref="address"
+              :class="{ 'text-main': copied }"
+              class="pointer"
+            >52 Brook Street, London W1K 5DS, UK {{ copied ? '✓' : '' }}</span>
+          </div>
+          <div class="m-3">
+            <h3 class="mb-0">Email:</h3>
+            <a id="phone" href="mailto:support@tgrpayments.com">support@tgrpayments.com</a>
+          </div>
+          <!-- <form class="my-form">
             <h2 class="mt-2 mb-4">Contact Us</h2>
-            <div class="d-flex mt-4 mb-4">
-              <a id="phone" href="tel:+4402034880005">+44 (0) 203 4880 005</a>
-            </div>
             <div class="form-group">
               <input type="email" class="form-control" id="form-name" placeholder="Name">
             </div>
@@ -27,7 +42,7 @@
               <textarea class="form-control" id="form-message" placeholder="Message"></textarea>
             </div>
             <button @click.prevent class="btn btn-primary mt-2" type="submit">Send</button>
-          </form><
+          </form>-->
         </div>
       </div>
     </div>
@@ -36,12 +51,41 @@
 
 <script>
 export default {
-  components: {}
+  components: {},
+  data() {
+    return {
+      copied: false
+    };
+  },
+  methods: {
+    copyAddress() {
+      this.selectText(this.$refs.address);
+      document.execCommand("copy");
+      this.copied = true;
+      setTimeout(() => {
+        this.copied = false;
+      }, 5000);
+    },
+    selectText(element) {
+      const range = document.createRange();
+      range.selectNode(element);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    }
+  }
 };
 </script>
 
 <style scoped>
 .my-form {
+  color: #2f9483;
+  font-size: 1.1rem;
+}
+span {
+  color: #71748d;
+  font-size: 1.1rem;
+}
+.text-main {
   color: #2f9483;
 }
 .my-form .btn-default {
