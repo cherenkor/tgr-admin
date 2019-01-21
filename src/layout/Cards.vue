@@ -29,7 +29,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { filter } from "lodash";
+import { flatten } from "lodash";
 import ACard from "../components/ACard";
 import ATransaction from "../components/ATransaction";
 
@@ -50,19 +50,24 @@ export default {
   mounted() {
     this.loadCards().then(cards => {
       this.currentCardId = cards[0].id;
-      const loadCardTransactionsData = {
-        id: cards[0].id,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadCardTransactionsData);
+      this.loadCardTransactionsHandler(cards[0].id);
 
-      this.cards = cards.map((card, i) => {
-        card.selected = i === 0;
-        card.status = "active";
-        card.symbol = this.getCurrencySymbol(card.balances[0].currency);
-        card.balance = this.getCurrencySymbol(card.balances[0].balance);
-        return card;
-      });
+      this.cards = flatten(
+        cards.map((card, i) => {
+          card.selected = i === 0;
+          card.status = "active";
+
+          return card.balances.map(balance => {
+            balance.symbol = this.getCurrencySymbol(balance.currency);
+            balance = {
+              ...card,
+              ...balance
+            };
+            delete balance.balances;
+            return balance;
+          });
+        })
+      );
     });
   },
   computed: {
@@ -70,28 +75,21 @@ export default {
   },
   methods: {
     ...mapActions("cards", ["loadCards", "loadCardTransactions"]),
-    selectCard(cardId) {
-      this.showLoadMore = false;
-      this.transactions = [];
-      this.transactionsPage = 1;
-      this.currentCardId = cardId;
-      const loadCardTransactionsData = {
-        id: cardId,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadCardTransactionsData);
+    selectCard({ id, currency }) {
+      if (this.currentCardId !== id) {
+        this.loadCardTransactionsHandler(id);
+        this.resetSelected();
+      }
+      this.currentCardId = id;
+
       this.cards = this.cards.map(card => {
-        card.selected = card.id === cardId;
+        card.selected = card.id === id && card.currency === currency;
         return card;
       });
     },
     loadMore() {
       this.transactionsPage++;
-      const loadCardTransactionsData = {
-        id: this.currentCardId,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadCardTransactionsData, true);
+      this.loadCardTransactionsHandler(this.currentCardId, true);
     },
     getTransactions(loadCardTransactionsData, loadMore = false) {
       return this.loadCardTransactions(loadCardTransactionsData).then(
@@ -116,6 +114,18 @@ export default {
           else this.transactions = newTransactions;
         }
       );
+    },
+    loadCardTransactionsHandler(cardId, loadMore = false) {
+      const loadCardTransactionsData = {
+        id: cardId,
+        page: this.transactionsPage
+      };
+      this.getTransactions(loadCardTransactionsData, loadMore);
+    },
+    resetSelected() {
+      this.showLoadMore = false;
+      this.transactions = [];
+      this.transactionsPage = 1;
     },
     getCurrencySymbol(name) {
       const list = {

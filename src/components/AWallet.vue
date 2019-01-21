@@ -7,7 +7,7 @@
         </div>
         <div class="wallet-balance">
           <h5 class="text-grey m-0 text-uppercase">Balance</h5>
-          <h2 class="text-white mt-0">{{ wallet.symbol + wallet.balance }}</h2>
+          <h2 class="text-white mt-0">{{ balanceString }}</h2>
         </div>
         <div class="wallet-currency mb-4">
           <h3 class="text-white m-0">TGR Wallet({{ wallet.currency }})</h3>
@@ -25,9 +25,40 @@ export default {
       default: ""
     }
   },
+  computed: {
+    balanceString() {
+      return `${this.wallet.symbol} ${this.beautyBalanceAmount}`;
+    },
+    beautyBalanceAmount() {
+      const amountString = this.wallet.balance.toString();
+      const hasDesimal = amountString.includes(".");
+
+      return this.addSpaces(amountString, hasDesimal);
+    }
+  },
   methods: {
     selectWallet() {
       this.$emit("selectWallet", this.wallet.id);
+    },
+    addSpaces(numbers, hasDesimal) {
+      let decimals = "";
+      if (hasDesimal) {
+        decimals = numbers.slice(-3);
+        numbers = numbers.slice(0, -3);
+      }
+
+      numbers = numbers
+        .split("")
+        .reverse()
+        .map((num, i) => {
+          if (num === "-" || i === 0) return num;
+          num += i % 3 === 0 ? " " : "";
+          return num;
+        })
+        .reverse()
+        .join("");
+
+      return numbers + decimals;
     }
   }
 };

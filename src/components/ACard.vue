@@ -7,7 +7,7 @@
         </div>
         <div class="card-balance">
           <h5 class="text-grey m-0">Balance</h5>
-          <h2 class="text-white mt-0">{{ card.symbol + card.balance }}</h2>
+          <h2 class="text-white mt-0">{{ balanceString }}</h2>
         </div>
         <div class="card-number">
           <h3 class="text-white m-0">{{ card.pan }}</h3>
@@ -42,9 +42,40 @@ export default {
       default: ""
     }
   },
+  computed: {
+    balanceString() {
+      return `${this.card.symbol} ${this.beautyBalanceAmount}`;
+    },
+    beautyBalanceAmount() {
+      const amountString = this.card.balance.toString();
+      const hasDesimal = amountString.includes(".");
+
+      return this.addSpaces(amountString, hasDesimal);
+    }
+  },
   methods: {
     selectCard() {
-      this.$emit("selectCard", this.card.id);
+      this.$emit("selectCard", this.card);
+    },
+    addSpaces(numbers, hasDesimal) {
+      let decimals = "";
+      if (hasDesimal) {
+        decimals = numbers.slice(-3);
+        numbers = numbers.slice(0, -3);
+      }
+
+      numbers = numbers
+        .split("")
+        .reverse()
+        .map((num, i) => {
+          if (num === "-" || i === 0) return num;
+          num += i % 3 === 0 ? " " : "";
+          return num;
+        })
+        .reverse()
+        .join("");
+
+      return numbers + decimals;
     }
   }
 };
