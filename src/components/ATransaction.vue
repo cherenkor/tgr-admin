@@ -12,7 +12,7 @@
             class="m-0 word-break-word"
           >{{ transaction.description }}</h6>
         </div>
-        <div class="text-right d-flex align-items-center">
+        <div class="amount text-right d-flex align-items-center justify-content-end">
           <h4 class="m-0">{{ transaction.amount }}</h4>
         </div>
       </div>
@@ -54,5 +54,9 @@ export default {
 }
 .icon-wrap {
   font-size: 24px;
+}
+.amount,
+.amount h4 {
+  width: max-content;
 }
 </style>

@@ -2,7 +2,12 @@
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
       <div class="d-flex flex-row flex-nowrap overflow-auto">
-        <a-card v-for="(card, i) in cards" @selectCard="selectCard" :card="card" :key="i"/>
+        <a-card
+          v-for="card in cards"
+          @selectCard="selectCard"
+          :card="card"
+          :key="JSON.stringify(card)"
+        />
       </div>
       <hr>
       <div id="transactions" class="mt-4">
@@ -13,6 +18,9 @@
             :transaction="transaction"
             :key="i"
           />
+          <div v-if="showLoadMore" id="loadMore" style>
+            <a @click="loadMore">Load More</a>
+          </div>
         </div>
       </div>
     </div>
@@ -34,24 +42,22 @@ export default {
     return {
       cards: [],
       transactions: [],
-      transactionsPage: 1
+      transactionsPage: 1,
+      currentCardId: null,
+      showLoadMore: false
     };
   },
   mounted() {
     this.loadCards().then(cards => {
+      this.currentCardId = cards[0].id;
       const loadCardTransactionsData = {
         id: cards[0].id,
         page: this.transactionsPage
       };
-      this.loadCardTransactions(loadCardTransactionsData).then(transactions => {
-        this.transactions = transactions.map(action => {
-          action.isPositive = action.amount >= 0;
-          action.type = action.amount >= 0 ? "Top-Up" : "Payment";
-          action.amount =
-            action.amount >= 0 ? "+" + action.amount : action.amount;
-        });
-      });
-      this.cards = cards.map(card => {
+      this.getTransactions(loadCardTransactionsData);
+
+      this.cards = cards.map((card, i) => {
+        card.selected = i === 0;
         card.status = "active";
         card.balance = "0";
         return card;
@@ -63,21 +69,86 @@ export default {
   },
   methods: {
     ...mapActions("cards", ["loadCards", "loadCardTransactions"]),
-    selectCard(selectedCard) {
+    selectCard(cardId) {
+      this.showLoadMore = false;
+      this.transactions = [];
+      this.currentCardId = cardId;
       const loadCardTransactionsData = {
-        id: selectedCard.id,
+        id: cardId,
         page: this.transactionsPage
       };
-      this.transactions = this.loadCardTransactions(loadCardTransactionsData);
+      this.getTransactions(loadCardTransactionsData);
       this.cards = this.cards.map(card => {
-        card.selected = card.id === selectedCard.id;
+        card.selected = card.id === cardId;
         return card;
       });
     },
-    getCards() {}
+    loadMore() {
+      this.transactionsPage++;
+      const loadCardTransactionsData = {
+        id: this.currentCardId,
+        page: this.transactionsPage
+      };
+      this.getTransactions(loadCardTransactionsData, true);
+    },
+    getTransactions(loadCardTransactionsData, loadMore = false) {
+      return this.loadCardTransactions(loadCardTransactionsData).then(
+        transactions => {
+          if (!transactions.length) {
+            this.showLoadMore = false;
+            return;
+          }
+          this.showLoadMore = true;
+          const newTransactions = transactions.map(action => {
+            action.isPositive = action.amount >= 0;
+            const currency = this.getCurrencySymbol(action.currency);
+            action.amount =
+              action.amount >= 0
+                ? `+${currency}${action.amount}`
+                : action.amount.toString().replace("-", `-${currency}`);
+            action.type = action.amount >= 0 ? "Top-up" : "Payment";
+            return action;
+          });
+          if (loadMore)
+            this.transactions = [...this.transactions, ...newTransactions];
+          else this.transactions = newTransactions;
+        }
+      );
+    },
+    getCurrencySymbol(name) {
+      const list = {
+        EUR: "€",
+        USD: "$",
+        GBP: "£",
+        RUB: "₽"
+      };
+      return list[name] || name;
+    }
   }
 };
 </script>
 
 <style scoped>
+#loadMore {
+  padding-bottom: 30px;
+  padding-top: 30px;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+#loadMore a {
+  background: #7ac0b4;
+  border-radius: 3px;
+  color: white;
+  display: inline-block;
+  padding: 10px 30px;
+  transition: all 0.25s ease-out;
+  -webkit-font-smoothing: antialiased;
+}
+#loadMore a:hover {
+  background-color: #f2a181;
+}
+#loadMore a:active {
+  background-color: #f3926c;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card-block">
+  <div :key="card.selected" class="card-block">
     <div class="card shadow">
       <div @click="selectCard" class="card-body text-center">
         <div class="card-logo">
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     selectCard() {
-      this.$emit("selectCard", this.card);
+      this.$emit("selectCard", this.card.id);
     }
   }
 };
@@ -96,6 +96,7 @@ export default {
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .card-action-btn:hover {
+  color: #f2a181;
   box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.25), 0 8px 8px rgba(0, 0, 0, 0.22);
 }
 .shadow {
