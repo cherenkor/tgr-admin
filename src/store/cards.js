@@ -28,6 +28,13 @@ const actions = {
       return res.data.transactions;
     })
       .catch(console.log);
+  },
+  loadPin(context, id) {
+    return axios.get(`${baseURL}/api/client/cards/${id}/get_pin`).then(res => {
+      console.log('PIN', res.data.pin)
+      return res.data.pin;
+    })
+      .catch(console.log);
   }
 };
 

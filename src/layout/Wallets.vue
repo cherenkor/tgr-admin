@@ -98,11 +98,11 @@ export default {
           const newTransactions = transactions.map(action => {
             action.isPositive = action.amount >= 0;
             const currency = this.getCurrencySymbol(action.currency);
+            action.type = action.amount >= 0 ? "In transfer" : "Out transfer";
             action.amount =
               action.amount >= 0
                 ? `+${currency}${action.amount}`
                 : action.amount.toString().replace("-", `-${currency}`);
-            action.type = action.amount >= 0 ? "Top-up" : "Payment";
             return action;
           });
           if (loadMore)

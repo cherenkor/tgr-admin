@@ -27,22 +27,6 @@
             <h3 class="mb-0">Email:</h3>
             <a id="phone" href="mailto:support@tgrpayments.com">support@tgrpayments.com</a>
           </div>
-          <!-- <form class="my-form">
-            <h2 class="mt-2 mb-4">Contact Us</h2>
-            <div class="form-group">
-              <input type="email" class="form-control" id="form-name" placeholder="Name">
-            </div>
-            <div class="form-group">
-              <input type="text" class="form-control" id="form-subject" placeholder="Subject">
-            </div>
-            <div class="form-group">
-              <input type="email" class="form-control" id="form-email" placeholder="Email">
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" id="form-message" placeholder="Message"></textarea>
-            </div>
-            <button @click.prevent class="btn btn-primary mt-2" type="submit">Send</button>
-          </form>-->
         </div>
       </div>
     </div>
