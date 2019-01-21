@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="pin">
+  <div class="modal" id="pin">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">

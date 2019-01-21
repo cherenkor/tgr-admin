@@ -3,9 +3,9 @@
     <div class="container-fluid dashboard-content">
       <div class="d-flex flex-row flex-nowrap overflow-auto">
         <a-card
-          v-for="card in cards"
+          v-for="(card,i) in cards"
           @selectCard="selectCard"
-          :card="card"
+          :card="{...card, index: i}"
           :key="JSON.stringify(card)"
         />
       </div>

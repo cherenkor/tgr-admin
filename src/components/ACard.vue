@@ -20,52 +20,55 @@
     </div>
     <div class="card-actions d-flex justify-content-center">
       <div v-if="card.selected" class="card-actions-btns d-flex justify-content-center">
-        <div class="card-action-btn" data-toggle="modal" data-target="#pin">
+        <div class="card-action-btn" data-toggle="modal" data-target="#pin" data-backdrop="static">
           <font-awesome-icon icon="cog"/>
         </div>
-        <div class="card-action-btn" data-toggle="modal" data-target="#request">
+        <div
+          class="card-action-btn"
+          data-toggle="modal"
+          data-target="#request"
+          data-backdrop="static"
+        >
           <font-awesome-icon icon="shield-alt"/>
         </div>
-        <div class="card-action-btn" data-toggle="modal" data-target="#top-up">
+        <div
+          class="card-action-btn"
+          data-toggle="modal"
+          data-target="#top-up"
+          data-backdrop="static"
+        >
           <font-awesome-icon icon="plus"/>
         </div>
       </div>
     </div>
 
-    <!-- Modals -->
-    <!-- Pin -->
-    <a-security-modal :card-id="card.id"/>
+    <template v-if="card.selected">
+      <!-- Modals -->
+      <!-- Pin -->
+      <a-security-modal :card-id="card.id"/>
 
-    <!-- Request -->
-    <div class="modal fade" id="request">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Online Payment</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <!-- Request -->
+      <a-request-modal :card-id="card.id"/>
+      <!-- Top-Up -->
+      <div class="modal fade" id="top-up">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Top Up</h4>
+            </div>
+            <div class="modal-body">
+              <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
           </div>
-          <div class="modal-body">Modal body..</div>
         </div>
       </div>
-    </div>
-
-    <!-- Top-Up -->
-    <div class="modal fade" id="top-up">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Top Up</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <div class="modal-body">Modal body..</div>
-        </div>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import ASecurityModal from "./ASecurityModal";
+import ARequestModal from "./ARequestModal";
 
 export default {
   props: {
@@ -75,7 +78,8 @@ export default {
     }
   },
   components: {
-    ASecurityModal
+    ASecurityModal,
+    ARequestModal
   },
   data() {
     return {};
