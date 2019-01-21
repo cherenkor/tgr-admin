@@ -7,7 +7,7 @@
         </div>
         <div class="wallet-balance">
           <h5 class="text-grey m-0 text-uppercase">Balance</h5>
-          <h2 class="text-white mt-0">${{ wallet.balance }}</h2>
+          <h2 class="text-white mt-0">{{ wallet.symbol + wallet.balance }}</h2>
         </div>
         <div class="wallet-currency mb-4">
           <h3 class="text-white m-0">TGR Wallet({{ wallet.currency }})</h3>
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     selectWallet() {
-      this.$emit("selectWallet", this.wallet);
+      this.$emit("selectWallet", this.wallet.id);
     }
   }
 };

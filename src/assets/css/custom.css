@@ -28,6 +28,7 @@ a:hover {
     cursor: pointer;
 }
 
+
 /* Colors */
 .text-grey {
     color: #9d9d9d;
@@ -46,3 +47,27 @@ a:hover {
 .word-break-word {
     word-break: break-word;
 }
+
+/* CUSTOM */
+#loadMore {
+    padding-bottom: 30px;
+    padding-top: 30px;
+    text-align: center;
+    width: 100%;
+    cursor: pointer;
+  }
+  #loadMore a {
+    background: #7ac0b4;
+    border-radius: 3px;
+    color: white;
+    display: inline-block;
+    padding: 10px 30px;
+    transition: all 0.25s ease-out;
+    -webkit-font-smoothing: antialiased;
+  }
+  #loadMore a:hover {
+    background-color: #f2a181;
+  }
+  #loadMore a:active {
+    background-color: #f3926c;
+  }

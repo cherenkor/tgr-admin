@@ -3,10 +3,10 @@
     <div class="container-fluid dashboard-content">
       <div class="d-flex flex-row flex-nowrap overflow-auto">
         <a-wallet
-          v-for="(wallet, i) in wallets"
+          v-for="wallet in wallets"
           @selectWallet="selectWallet"
           :wallet="wallet"
-          :key="i"
+          :key="JSON.stringify(wallet)"
         />
       </div>
       <hr>
@@ -18,6 +18,9 @@
             :transaction="transaction"
             :key="i"
           />
+          <div v-if="showLoadMore" id="loadMore" style>
+            <a @click="loadMore">Load More</a>
+          </div>
         </div>
       </div>
     </div>
@@ -27,6 +30,7 @@
 <script>
 import AWallet from "../components/AWallet";
 import ATransaction from "../components/ATransaction";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
@@ -35,68 +39,86 @@ export default {
   },
   data() {
     return {
-      wallets: [
-        {
-          id: 1,
-          balance: 200,
-          currency: "EUR",
-          selected: true
-        },
-        {
-          id: 2,
-          balance: 320,
-          currency: "BTC",
-          selected: false
-        }
-      ],
-      transactions: [
-        {
-          isPositive: true,
-          type: "System",
-          amount: "+$200"
-        },
-        {
-          isPositive: false,
-          type: "System",
-          amount: "-$200"
-        },
-        {
-          isPositive: false,
-          type: "System",
-          amount: "-$200"
-        },
-        {
-          isPositive: true,
-          type: "System",
-          amount: "+$250"
-        },
-        {
-          isPositive: true,
-          type: "System",
-          amount: "+$1700"
-        }
-      ]
+      wallets: [],
+      transactions: [],
+      transactionsPage: 1,
+      currentWalletId: null,
+      showLoadMore: false
     };
   },
+  mounted() {
+    this.loadWallets().then(wallets => {
+      this.currentWalletId = wallets[0].id;
+      const loadWalletTransactionsData = {
+        id: wallets[0].id,
+        page: this.transactionsPage
+      };
+      this.getTransactions(loadWalletTransactionsData);
+
+      this.wallets = wallets.map((wallet, i) => {
+        wallet.selected = i === 0;
+        wallet.symbol = this.getCurrencySymbol(wallet.currency);
+        return wallet;
+      });
+    });
+  },
   methods: {
-    selectWallet(selectedWallet) {
-      this.transactions = [
-        {
-          isPositive: false,
-          type: "System",
-          amount: "-$200"
-        },
-        {
-          isPositive: true,
-          type: "System",
-          amount: "+$250"
-        },
-        {
-          isPositive: true,
-          type: "System",
-          amount: "+$1700"
+    ...mapActions("wallets", ["loadWallets", "loadWalletTransactions"]),
+    selectWallet(walletId) {
+      this.showLoadMore = false;
+      this.transactions = [];
+      this.transactionsPage = 1;
+      this.currentWalletId = walletId;
+      const loadWalletTransactionsData = {
+        id: walletId,
+        page: this.transactionsPage
+      };
+      this.getTransactions(loadWalletTransactionsData);
+      this.wallets = this.wallets.map(wallet => {
+        wallet.selected = wallet.id === walletId;
+        return wallet;
+      });
+    },
+    loadMore() {
+      this.transactionsPage++;
+      const loadWalletTransactionsData = {
+        id: this.currentWalletId,
+        page: this.transactionsPage
+      };
+      this.getTransactions(loadWalletTransactionsData, true);
+    },
+    getTransactions(loadWalletTransactionsData, loadMore = false) {
+      return this.loadWalletTransactions(loadWalletTransactionsData).then(
+        transactions => {
+          if (!transactions.length) {
+            this.showLoadMore = false;
+            return;
+          }
+          this.showLoadMore = true;
+          const newTransactions = transactions.map(action => {
+            action.isPositive = action.amount >= 0;
+            const currency = this.getCurrencySymbol(action.currency);
+            action.amount =
+              action.amount >= 0
+                ? `+${currency}${action.amount}`
+                : action.amount.toString().replace("-", `-${currency}`);
+            action.type = action.amount >= 0 ? "Top-up" : "Payment";
+            return action;
+          });
+          if (loadMore)
+            this.transactions = [...this.transactions, ...newTransactions];
+          else this.transactions = newTransactions;
         }
-      ];
+      );
+    },
+    getCurrencySymbol(name) {
+      const list = {
+        EUR: "€",
+        USD: "$",
+        GBP: "£",
+        RUB: "₽"
+      };
+      return list[name] || name;
     }
   }
 };

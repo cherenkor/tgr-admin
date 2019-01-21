@@ -59,7 +59,8 @@ export default {
       this.cards = cards.map((card, i) => {
         card.selected = i === 0;
         card.status = "active";
-        card.balance = "0";
+        card.symbol = this.getCurrencySymbol(card.balances[0].currency);
+        card.balance = this.getCurrencySymbol(card.balances[0].balance);
         return card;
       });
     });
@@ -72,6 +73,7 @@ export default {
     selectCard(cardId) {
       this.showLoadMore = false;
       this.transactions = [];
+      this.transactionsPage = 1;
       this.currentCardId = cardId;
       const loadCardTransactionsData = {
         id: cardId,
@@ -129,26 +131,4 @@ export default {
 </script>
 
 <style scoped>
-#loadMore {
-  padding-bottom: 30px;
-  padding-top: 30px;
-  text-align: center;
-  width: 100%;
-  cursor: pointer;
-}
-#loadMore a {
-  background: #7ac0b4;
-  border-radius: 3px;
-  color: white;
-  display: inline-block;
-  padding: 10px 30px;
-  transition: all 0.25s ease-out;
-  -webkit-font-smoothing: antialiased;
-}
-#loadMore a:hover {
-  background-color: #f2a181;
-}
-#loadMore a:active {
-  background-color: #f3926c;
-}
 </style>
