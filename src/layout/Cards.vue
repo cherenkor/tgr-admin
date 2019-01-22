@@ -11,8 +11,11 @@
       </div>
       <hr>
       <div id="transactions" class="mt-4">
-        <h2 class="text-grey">Last Transactions</h2>
-        <div class="transactions-list">
+        <h2>Last Transactions</h2>
+        <div v-if="noTransactions" class="empty text-center">
+          <h4>No transactions</h4>
+        </div>
+        <div v-else class="transactions-list">
           <a-transaction
             v-for="(transaction, i) in transactions"
             :transaction="transaction"
@@ -22,6 +25,7 @@
             <a @click="loadMore">Load More</a>
           </div>
         </div>
+        <spinner v-if="loading"/>
       </div>
     </div>
   </div>
@@ -44,7 +48,9 @@ export default {
       transactions: [],
       transactionsPage: 1,
       currentCardId: null,
-      showLoadMore: false
+      showLoadMore: false,
+      noTransactions: false,
+      loading: true
     };
   },
   mounted() {
@@ -70,9 +76,6 @@ export default {
       );
     });
   },
-  computed: {
-    // ...mapGetters("cards", ["transactions"])
-  },
   methods: {
     ...mapActions("cards", ["loadCards", "loadCardTransactions"]),
     selectCard({ id, currency }) {
@@ -92,8 +95,11 @@ export default {
       this.loadCardTransactionsHandler(this.currentCardId, true);
     },
     getTransactions(loadCardTransactionsData, loadMore = false) {
+      this.noTransactions = false;
       return this.loadCardTransactions(loadCardTransactionsData).then(
         transactions => {
+          if (!this.transactions.length && !transactions.length)
+            this.noTransactions = true;
           if (!transactions.length) {
             this.showLoadMore = false;
             return;
@@ -120,7 +126,9 @@ export default {
         id: cardId,
         page: this.transactionsPage
       };
-      this.getTransactions(loadCardTransactionsData, loadMore);
+      this.getTransactions(loadCardTransactionsData, loadMore).finally(
+        () => (this.loading = false)
+      );
     },
     resetSelected() {
       this.showLoadMore = false;

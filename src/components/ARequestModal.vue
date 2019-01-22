@@ -81,7 +81,7 @@ export default {
     ...mapActions("cards", ["sendRequest"]),
     localSendRequest() {
       this.sendRequest(this.cardId).then(success => {
-        if (!success) this.showSuccessDialog = true;
+        if (success) this.showSuccessDialog = true;
       });
     }
   }

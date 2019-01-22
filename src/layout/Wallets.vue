@@ -11,8 +11,11 @@
       </div>
       <hr>
       <div id="transactions" class="mt-4">
-        <h2 class="text-grey">Last Transactions</h2>
-        <div class="transactions-list">
+        <h2>Last Transactions</h2>
+        <div v-if="noTransactions" class="empty text-center">
+          <h4>No transactions</h4>
+        </div>
+        <div v-else class="transactions-list">
           <a-transaction
             v-for="(transaction, i) in transactions"
             :transaction="transaction"
@@ -22,6 +25,8 @@
             <a @click="loadMore">Load More</a>
           </div>
         </div>
+
+        <spinner v-if="loading"/>
       </div>
     </div>
   </div>
@@ -43,17 +48,15 @@ export default {
       transactions: [],
       transactionsPage: 1,
       currentWalletId: null,
-      showLoadMore: false
+      showLoadMore: false,
+      noTransactions: false,
+      loading: true
     };
   },
   mounted() {
     this.loadWallets().then(wallets => {
       this.currentWalletId = wallets[0].id;
-      const loadWalletTransactionsData = {
-        id: wallets[0].id,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadWalletTransactionsData);
+      this.loadCardTransactionsHandler(wallets[0].id);
 
       this.wallets = wallets.map((wallet, i) => {
         wallet.selected = i === 0;
@@ -69,11 +72,7 @@ export default {
       this.transactions = [];
       this.transactionsPage = 1;
       this.currentWalletId = walletId;
-      const loadWalletTransactionsData = {
-        id: walletId,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadWalletTransactionsData);
+      this.loadCardTransactionsHandler(walletId);
       this.wallets = this.wallets.map(wallet => {
         wallet.selected = wallet.id === walletId;
         return wallet;
@@ -81,15 +80,14 @@ export default {
     },
     loadMore() {
       this.transactionsPage++;
-      const loadWalletTransactionsData = {
-        id: this.currentWalletId,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadWalletTransactionsData, true);
+      this.loadCardTransactionsHandler(this.currentWalletId, true);
     },
     getTransactions(loadWalletTransactionsData, loadMore = false) {
+      this.noTransactions = false;
       return this.loadWalletTransactions(loadWalletTransactionsData).then(
         transactions => {
+          if (!this.transactions.length && !transactions.length)
+            this.noTransactions = true;
           if (!transactions.length) {
             this.showLoadMore = false;
             return;
@@ -109,6 +107,16 @@ export default {
             this.transactions = [...this.transactions, ...newTransactions];
           else this.transactions = newTransactions;
         }
+      );
+    },
+    loadCardTransactionsHandler(cardId, loadMore = false) {
+      this.loading = true;
+      const loadCardTransactionsData = {
+        id: cardId,
+        page: this.transactionsPage
+      };
+      this.getTransactions(loadCardTransactionsData, loadMore).finally(
+        () => (this.loading = false)
       );
     },
     getCurrencySymbol(name) {

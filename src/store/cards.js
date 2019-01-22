@@ -37,7 +37,7 @@ const actions = {
   },
   sendRequest(context, id) {
     const data = { "online_purchase": true };
-    return axios.post(`${baseURL}/api/client/cards/${id}/settings`, data).then(res => {
+    return axios.patch(`${baseURL}/api/client/cards/${id}/settings`, data).then(res => {
       return true;
     })
       .catch(console.log);
