@@ -43,25 +43,12 @@
     </div>
 
     <template v-if="card.selected">
-      <!-- Modals -->
       <!-- Pin -->
       <a-security-modal :card-id="card.id"/>
-
       <!-- Request -->
       <a-request-modal :card-id="card.id"/>
       <!-- Top-Up -->
-      <div class="modal fade" id="top-up">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Top Up</h4>
-            </div>
-            <div class="modal-body">
-              <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <a-top-up-modal :top-up="card.top_up_requisites[card.currency]"/>
     </template>
   </div>
 </template>
@@ -69,6 +56,7 @@
 <script>
 import ASecurityModal from "./ASecurityModal";
 import ARequestModal from "./ARequestModal";
+import ATopUpModal from "./ATopUpModal";
 
 export default {
   props: {
@@ -79,7 +67,8 @@ export default {
   },
   components: {
     ASecurityModal,
-    ARequestModal
+    ARequestModal,
+    ATopUpModal
   },
   data() {
     return {};
