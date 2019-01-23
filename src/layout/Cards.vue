@@ -145,6 +145,7 @@ export default {
       );
     },
     loadCardTransactionsHandler(cardId, loadMore = false) {
+      this.loading = true;
       const loadCardTransactionsData = {
         id: cardId,
         page: this.transactionsPage

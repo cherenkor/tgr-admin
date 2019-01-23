@@ -62,7 +62,9 @@ export default {
   props: {
     card: {
       required: true,
-      default: ""
+      default() {
+        return {};
+      }
     }
   },
   components: {
