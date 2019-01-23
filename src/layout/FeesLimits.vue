@@ -17,7 +17,7 @@
                   <th>GBP</th>
                 </tr>
               </thead>
-              <tbody class="text-grey">
+              <tbody class="text-dark">
                 <tr v-for="(fee, i) in fees" :key="i">
                   <td>{{ fee.name }}</td>
                   <td>{{ fee.scope }}</td>
@@ -50,7 +50,7 @@
                   <th class="text-center" colspan="6">{{ limit.section }}</th>
                 </tr>
               </thead>
-              <tbody v-for="(row, j) in limit.rows" :key="j" class="text-grey">
+              <tbody v-for="(row, j) in limit.rows" :key="j" class="text-dark">
                 <tr>
                   <td class="w-50">{{ row.name }}</td>
                   <td class="w-14">{{ row.scope }}</td>
