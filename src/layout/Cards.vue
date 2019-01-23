@@ -16,11 +16,17 @@
           <h4>No transactions</h4>
         </div>
         <div v-else class="transactions-list">
-          <a-transaction
-            v-for="(transaction, i) in transactions"
-            :transaction="transaction"
-            :key="i"
-          />
+          <div v-for="date in dates" :key="JSON.stringify(date)" class="tranactions-wrapper">
+            <div class="w-100 d-flex justify-content-center mt-1 mb-2">
+              <span class="badge badge-light">{{date}}</span>
+            </div>
+            <a-transaction
+              v-for="(transaction, i) in transactions[date]"
+              :transaction="transaction"
+              :key="i"
+            />
+          </div>
+
           <div v-if="showLoadMore" id="loadMore" style>
             <a @click="loadMore">Load More</a>
           </div>
@@ -36,6 +42,7 @@ import { mapActions, mapGetters } from "vuex";
 import { flatten } from "lodash";
 import ACard from "../components/ACard";
 import ATransaction from "../components/ATransaction";
+import moment from "moment";
 
 export default {
   components: {
@@ -46,6 +53,7 @@ export default {
     return {
       cards: [],
       transactions: [],
+      dates: [],
       transactionsPage: 1,
       currentCardId: null,
       showLoadMore: false,
@@ -98,7 +106,7 @@ export default {
       this.noTransactions = false;
       return this.loadCardTransactions(loadCardTransactionsData).then(
         transactions => {
-          if (!this.transactions.length && !transactions.length)
+          if (!this.dates.length && !transactions.length)
             this.noTransactions = true;
           if (!transactions.length) {
             this.showLoadMore = false;
@@ -115,9 +123,24 @@ export default {
                 : action.amount.toString().replace("-", `-${currency}`);
             return action;
           });
-          if (loadMore)
-            this.transactions = [...this.transactions, ...newTransactions];
-          else this.transactions = newTransactions;
+
+          const dates = [];
+          const newList = [];
+          const transactionsList = newTransactions.reduce((acc, el) => {
+            const date = moment(el.date).format("MMM Do YY");
+            if (!dates.includes(date)) dates.push(date);
+            if (acc[date]) acc[date] = [...acc[date], el];
+            else acc[date] = [el];
+            return acc;
+          }, {});
+
+          if (loadMore) {
+            this.transactions = { ...this.transactions, ...transactionsList };
+            this.dates = [...this.dates, ...dates];
+          } else {
+            this.transactions = transactionsList;
+            this.dates = dates;
+          }
         }
       );
     },
@@ -133,6 +156,7 @@ export default {
     resetSelected() {
       this.showLoadMore = false;
       this.transactions = [];
+      this.dates = [];
       this.transactionsPage = 1;
     },
     getCurrencySymbol(name) {

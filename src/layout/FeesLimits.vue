@@ -2,11 +2,12 @@
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
       <h2 class="mb-4">Fees & Limits</h2>
+      <spinner class="my-4" v-if="loading"/>
       <div class="row">
         <div class="col-12 mx-auto mt-2 mb-4">
           <h3 class="text-center">Fees</h3>
           <div>
-            <table class="table table-bordered bg-white">
+            <table v-if="fees.length" class="table table-bordered bg-white">
               <thead class="thead-light">
                 <tr>
                   <th></th>
@@ -31,7 +32,7 @@
         <div class="col-12 mx-auto mt-2 mb-4">
           <h3 class="text-center">Limits</h3>
           <div>
-            <table class="table table-bordered bg-white">
+            <table v-if="limits.length" class="table table-bordered bg-white">
               <thead class="thead-light">
                 <tr>
                   <th class="w-50"></th>
@@ -77,7 +78,8 @@ export default {
   data() {
     return {
       fees: [],
-      limits: []
+      limits: [],
+      loading: true
     };
   },
   mounted() {
@@ -87,7 +89,10 @@ export default {
         this.fees = data.fees;
         this.limits = data.limits;
       })
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 };
 </script>

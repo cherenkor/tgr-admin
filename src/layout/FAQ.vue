@@ -2,6 +2,7 @@
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
       <h2>FAQ</h2>
+      <spinner class="my-4" v-if="loading"/>
       <div class="row mt-4 mb-4">
         <div v-for="card in faqList" :key="card.question" class="col-11 mx-automb-2">
           <div class="row">
@@ -41,7 +42,8 @@ axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 export default {
   data() {
     return {
-      faqList: []
+      faqList: [],
+      loading: true
     };
   },
   mounted() {
@@ -50,7 +52,10 @@ export default {
       .then(({ data }) => {
         this.faqList = data.faq_cards;
       })
-      .catch(console.log);
+      .catch(console.log)
+      .finally(() => {
+        this.loading = false;
+      });
   }
 };
 </script>
