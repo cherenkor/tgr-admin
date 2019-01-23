@@ -1,6 +1,10 @@
 # tgr-admin
 
 > Admin panel for TGR company
+> 
+
+![alt text](https://raw.githubusercontent.com/cherenkor/tgr-admin/master/login.png)
+![alt text](https://raw.githubusercontent.com/cherenkor/tgr-admin/master/cards.png)
 
 ## Build Setup
 
