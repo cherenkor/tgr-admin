@@ -7,10 +7,10 @@
         </div>
         <div class="modal-body text-center">
           <div v-for="info in infoList" :key="info" class="info text-left">
-            <p class="text-dark mb-0">
+            <h5 class="text-dark mb-0">
               <strong>{{ info }}:</strong>
-            </p>
-            <p class="mb-2 text-grey small-height">{{ topUp[info] }}</p>
+            </h5>
+            <h5 class="mb-2 text-grey small-height">{{ topUp[info] }}</h5>
           </div>
           <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>

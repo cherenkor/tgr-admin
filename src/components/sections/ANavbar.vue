@@ -16,9 +16,17 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="d-lg-none d-xl-none" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto navbar-right-top">
-          <li class="nav-item nav-user">Welcome, {{ username }}</li>
+          <li class="nav-item nav-user">{{ username }}</li>
+        </ul>
+      </div>
+      <div
+        class="d-none d-lg-block d-xl-block collapse navbar-collapse"
+        id="navbarSupportedContent"
+      >
+        <ul class="navbar-nav ml-auto navbar-right-top">
+          <li class="nav-item nav-user">{{ username }}</li>
           <li id="logout" class="nav-item dropdown connection">
             <a @click="logoutUser">
               <font-awesome-icon icon="sign-out-alt"/>

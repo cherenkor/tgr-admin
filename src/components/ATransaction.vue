@@ -42,16 +42,13 @@ export default {
 
 <style scoped>
 .transaction {
-  cursor: pointer;
   padding: 18px 10px;
   border-radius: 0.5rem;
   background-color: #fff;
   box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.transaction:hover {
-  box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.25), 0 8px 8px rgba(0, 0, 0, 0.22);
-}
+
 .icon-wrap {
   font-size: 24px;
 }

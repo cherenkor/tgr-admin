@@ -5,10 +5,38 @@ import store from '@/store/index'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEnvelope, faLock, faSignOutAlt, faCog, faShieldAlt, faPlus, faCreditCard, faWallet, faPercent, faBookOpen, faArrowAltCircleUp, faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons'
+import {
+  faEnvelope,
+  faLock,
+  faSignOutAlt,
+  faCog,
+  faShieldAlt,
+  faPlus,
+  faCreditCard,
+  faWallet,
+  faPercent,
+  faBookOpen,
+  faArrowAltCircleUp,
+  faArrowAltCircleDown,
+  faFile
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ASpinner from './components/shared/ASpinner.vue'
-library.add(faEnvelope, faLock, faSignOutAlt, faCog, faShieldAlt, faPlus, faCreditCard, faWallet, faPercent, faBookOpen, faArrowAltCircleUp, faArrowAltCircleDown)
+library.add(
+  faEnvelope,
+  faLock,
+  faSignOutAlt,
+  faCog,
+  faShieldAlt,
+  faPlus,
+  faCreditCard,
+  faWallet,
+  faPercent,
+  faBookOpen,
+  faArrowAltCircleUp,
+  faArrowAltCircleDown,
+  faFile
+)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('spinner', ASpinner)

@@ -1,31 +1,35 @@
 <template>
-  <div class="dashboard-finance mt-4">
-    <div class="container-fluid dashboard-content mt-4">
-      <div class="row mt-4">
-        <div class="col-md-6">
+  <div class="dashboard-finance">
+    <div class="container-fluid dashboard-content">
+      <div class="row">
+        <!-- <div class="col-md-6">
           <div>
             <img style="width:100%; height: auto" src="../assets/img/map.png" alt>
           </div>
         </div>
-        <br>
+        <br>-->
         <div id="credentials" class="col-md-6">
-          <h2 class="mb-4">Contacts</h2>
+          <h3 class="mb-4">Contacts</h3>
           <div class="m-3">
-            <h3 class="mb-0">Phone, Whatsapp, Telegram:</h3>
-            <a id="phone" href="tel:+4402034880005">+44 (0) 203 4880 005</a>
+            <h5 class="mb-0">Landline:</h5>
+            <a id="phone" href="tel:+442034882840">+44 203 488 2840</a>
           </div>
           <div class="m-3">
-            <h3 class="mb-0">Address:</h3>
+            <h5 class="mb-0">Whats app us:</h5>
+            <a id="phone" href="tel:+447474466625">+44 747 446 6625</a>
+          </div>
+          <div class="m-3">
+            <h5 class="mb-0">Address:</h5>
             <span
               @click="copyAddress"
               ref="address"
               :class="{ 'text-main': copied }"
               class="pointer"
-            >52 Brook Street, London W1K 5DS, UK {{ copied ? '✓' : '' }}</span>
+            >33-34 Alfred Place, Fitzrovia, WC1E 7DP, London, UK {{ copied ? '✓' : '' }}</span>
           </div>
           <div class="m-3">
-            <h3 class="mb-0">Email:</h3>
-            <a id="phone" href="mailto:support@tgrpayments.com">support@tgrpayments.com</a>
+            <h5 class="mb-0">Email:</h5>
+            <a id="phone" href="mailto:support@tgr.cards">support@tgr.cards</a>
           </div>
         </div>
       </div>
@@ -65,9 +69,10 @@ export default {
   color: #2f9483;
   font-size: 1.1rem;
 }
-span {
+span,
+a {
   color: #71748d;
-  font-size: 1.1rem;
+  font-size: 14px !important;
 }
 .text-main {
   color: #2f9483;

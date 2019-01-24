@@ -61,7 +61,7 @@ const mutations = {
   setAuth(state, { token, user }) {
     state.isAuthenticated = true;
     state.user = user;
-    const name = `${user.title}. ${user.first_name} ${user.last_name}`;
+    const name = `${user.first_name} ${user.last_name}`;
     localStorage.setItem('name', name);
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

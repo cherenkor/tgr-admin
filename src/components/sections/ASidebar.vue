@@ -1,20 +1,12 @@
 <template>
   <div class="nav-left-sidebar sidebar-dark bg-dark">
     <div class="menu-list">
-      <nav class="navbar navbar-expand-lg navbar-light">
+      <nav :class=" { 'navbarOpen': show }" class="navbar navbar-expand-lg navbar-light">
         <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button @click="toggleNavbar" class="navbar-toggler" type="button">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div :class="{ 'show': show }" class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav flex-column">
             <li class="nav-item">
               <router-link to="/cards" class="nav-link">
@@ -56,6 +48,12 @@
                 <span class="ml-2">Terms & Conditions</span>
               </a>
             </li>
+            <li class="nav-item">
+              <a @click="logoutUser" class="nav-link d-lg-none d-xl-none">
+                <font-awesome-icon icon="sign-out-alt"/>
+                <span class="ml-2">Logout</span>
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -71,7 +69,24 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+
+export default {
+  data() {
+    return {
+      show: false
+    };
+  },
+  methods: {
+    ...mapActions("auth", ["logout"]),
+    logoutUser() {
+      this.logout().finally(() => this.$router.push("/"));
+    },
+    toggleNavbar() {
+      this.show = !this.show;
+    }
+  }
+};
 </script>
 
 <style scoped>

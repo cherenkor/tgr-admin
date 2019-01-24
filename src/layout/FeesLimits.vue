@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
-      <h2 class="mb-4">Fees & Limits</h2>
+      <h3 class="mb-4">Fees & Limits</h3>
       <spinner class="my-4" v-if="loading"/>
       <div class="row">
         <div class="col-12 mx-auto mt-2 mb-4">
@@ -12,18 +12,18 @@
                 <tr>
                   <th></th>
                   <th></th>
-                  <th>USD</th>
-                  <th>EUR</th>
-                  <th>GBP</th>
+                  <th class="text-center">USD</th>
+                  <th class="text-center">EUR</th>
+                  <th class="text-center">GBP</th>
                 </tr>
               </thead>
               <tbody class="text-dark">
                 <tr v-for="(fee, i) in fees" :key="i">
                   <td>{{ fee.name }}</td>
-                  <td>{{ fee.scope }}</td>
-                  <td>{{ fee.usd }}</td>
-                  <td>{{ fee.eur }}</td>
-                  <td>{{ fee.gbp }}</td>
+                  <td class="text-center">{{ fee.scope }}</td>
+                  <td class="text-center">{{ fee.usd }}</td>
+                  <td class="text-center">{{ fee.eur }}</td>
+                  <td class="text-center">{{ fee.gbp }}</td>
                 </tr>
               </tbody>
             </table>
@@ -35,11 +35,11 @@
             <table v-if="limits.length" class="table table-bordered bg-white">
               <thead class="thead-light">
                 <tr>
-                  <th class="w-50"></th>
-                  <th class="w-14"></th>
-                  <th>USD</th>
-                  <th>EUR</th>
-                  <th>GBP</th>
+                  <th class="w-25"></th>
+                  <th class="w-25"></th>
+                  <th class="text-center">USD</th>
+                  <th class="text-center">EUR</th>
+                  <th class="text-center">GBP</th>
                 </tr>
               </thead>
               <tbody></tbody>
@@ -47,16 +47,16 @@
             <table v-for="(limit, i) in limits" :key="i" class="table table-bordered bg-white">
               <thead>
                 <tr>
-                  <th class="text-center" colspan="6">{{ limit.section }}</th>
+                  <th class="text-center w-50" colspan="5">{{ limit.section }}</th>
                 </tr>
               </thead>
               <tbody v-for="(row, j) in limit.rows" :key="j" class="text-dark">
                 <tr>
-                  <td class="w-50">{{ row.name }}</td>
-                  <td class="w-14">{{ row.scope }}</td>
-                  <td>{{ row.usd }}</td>
-                  <td>{{ row.eur }}</td>
-                  <td>{{ row.gbp }}</td>
+                  <td class="w-25">{{ row.name }}</td>
+                  <td class="text-center w-25">{{ row.scope }}</td>
+                  <td class="text-center">{{ row.usd }}</td>
+                  <td class="text-center">{{ row.eur }}</td>
+                  <td class="text-center">{{ row.gbp }}</td>
                 </tr>
               </tbody>
             </table>
@@ -115,7 +115,16 @@ export default {
     font-size: 2.8vw;
   }
 }
-.w-14 {
-  width: 14%;
+.w-40 {
+  width: 40%;
+}
+.w-35 {
+  width: 35%;
+}
+.w-20 {
+  width: 20%;
+}
+.w-12 {
+  width: 12%;
 }
 </style>

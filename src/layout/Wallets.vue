@@ -11,7 +11,7 @@
       </div>
       <hr>
       <div id="transactions" class="mt-4">
-        <h2>Last Transactions</h2>
+        <h3>Last Transactions</h3>
         <div v-if="noTransactions" class="empty text-center">
           <h4>No transactions</h4>
         </div>
@@ -27,7 +27,7 @@
             />
           </div>
           <div v-if="showLoadMore" id="loadMore" style>
-            <a @click="loadMore">Load More</a>
+            <a @click="loadMore" class="pointer">Load More</a>
           </div>
         </div>
 

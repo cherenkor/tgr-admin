@@ -1,28 +1,32 @@
 <template>
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
-      <h2>FAQ</h2>
+      <h3>FAQ</h3>
       <spinner class="my-4" v-if="loading"/>
       <div class="row mt-4 mb-4">
         <div v-for="card in faqList" :key="card.question" class="col-11 mx-automb-2">
           <div class="row">
-            <div class="col-1">
-              <h3 class="my-1">
+            <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-0">
+              <p class="mb-1 text-black">
                 <strong>Question:</strong>
-              </h3>
+              </p>
             </div>
-            <div class="col-11 px-4">
-              <h3 class="mx-2 text-gray">{{ card.question}}</h3>
+            <div
+              class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-11 my-0 px-sm-5 px-md-4 px-lg-4 px-xl-0"
+            >
+              <p class="mx-2 mb-1 text-gray">{{ card.question}}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-1">
-              <h3 class="my-1">
+            <div class="col-2 col-sm-1 col-md-1 col-lg-1 col-xl-1 my-0">
+              <p class="mb-1 text-black">
                 <strong>Answer:</strong>
-              </h3>
+              </p>
             </div>
-            <div class="col-11 px-4">
-              <h3 class="mx-2 text-gray">{{ card.answer}}</h3>
+            <div
+              class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-11 my-0 px-sm-5 px-md-4 px-lg-4 px-xl-0"
+            >
+              <p v-html="answerWithLinks(card.answer)" class="mx-2 mb-1 text-gray"></p>
             </div>
           </div>
           <hr>
@@ -56,9 +60,18 @@ export default {
       .finally(() => {
         this.loading = false;
       });
+  },
+  methods: {
+    answerWithLinks(answer) {
+      const regEx = /(\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/;
+      return answer.replace(regEx, '<a href="mailto:$1">$1</a>');
+    }
   }
 };
 </script>
 
 <style scoped>
+.text-black {
+  color: black;
+}
 </style>
