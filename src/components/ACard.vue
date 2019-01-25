@@ -48,7 +48,7 @@
       <!-- Request -->
       <a-request-modal :card-id="card.id"/>
       <!-- Top-Up -->
-      <a-top-up-modal :top-up="card.top_up_requisites[card.currency]"/>
+      <a-top-up-modal :top-up="card.topUp"/>
     </template>
   </div>
 </template>

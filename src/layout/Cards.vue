@@ -39,7 +39,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { flatten } from "lodash";
+import { flatten, get } from "lodash";
 import ACard from "../components/ACard";
 import ATransaction from "../components/ATransaction";
 import moment from "moment";
@@ -53,6 +53,7 @@ export default {
     return {
       cards: [],
       transactions: [],
+      topUps: {},
       dates: [],
       transactionsPage: 1,
       currentCardId: null,
@@ -63,29 +64,38 @@ export default {
   },
   mounted() {
     this.loadCards().then(cards => {
-      this.currentCardId = cards[0].id;
-      this.loadCardTransactionsHandler(cards[0].id);
+      this.loadCardTopUp().then(topUp => {
+        if (!get(topUp, "data")) return;
 
-      this.cards = flatten(
-        cards.map((card, i) => {
-          card.selected = i === 0;
-          card.status = "active";
+        this.currentCardId = cards[0].id;
+        this.loadCardTransactionsHandler(cards[0].id);
 
-          return card.balances.map(balance => {
-            balance.symbol = this.getCurrencySymbol(balance.currency);
-            balance = {
-              ...card,
-              ...balance
-            };
-            delete balance.balances;
-            return balance;
-          });
-        })
-      );
+        this.cards = flatten(
+          cards.map((card, i) => {
+            card.selected = i === 0;
+            card.status = "active";
+
+            return card.balances.map(balance => {
+              balance.symbol = this.getCurrencySymbol(balance.currency);
+              balance = {
+                ...card,
+                ...balance,
+                topUp: topUp.data
+              };
+              delete balance.balances;
+              return balance;
+            });
+          })
+        );
+      });
     });
   },
   methods: {
-    ...mapActions("cards", ["loadCards", "loadCardTransactions"]),
+    ...mapActions("cards", [
+      "loadCards",
+      "loadCardTransactions",
+      "loadCardTopUp"
+    ]),
     selectCard({ id, currency }) {
       if (this.currentCardId !== id) {
         this.loadCardTransactionsHandler(id);

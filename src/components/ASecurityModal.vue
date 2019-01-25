@@ -7,9 +7,7 @@
         </div>
         <div class="modal-body text-center">
           <h5>Your pin code is:</h5>
-          <h5>
-            <b>{{ pinCode }}</b>
-          </h5>
+          <h1 class="text-dark mb-4">{{ pinCode }}</h1>
           <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>

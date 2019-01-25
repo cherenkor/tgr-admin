@@ -41,6 +41,12 @@ const actions = {
       return true;
     })
       .catch(console.log);
+  },
+  loadCardTopUp(context) {
+    return axios.get(`${baseURL}/api/client/requisites`).then(res => {
+      return res;
+    })
+      .catch(console.log);
   }
 };
 

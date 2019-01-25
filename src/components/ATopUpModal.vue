@@ -6,11 +6,18 @@
           <h4 class="modal-title">Top Up</h4>
         </div>
         <div class="modal-body text-center">
-          <div v-for="info in infoList" :key="info" class="info text-left">
-            <h5 class="text-dark mb-0">
-              <strong>{{ info }}:</strong>
+          <div v-for="info in infoList" :key="info" class="info text-left mb-3">
+            <h5 class="text-dark mb-1">
+              <strong>{{ info }}</strong>
             </h5>
-            <h5 class="mb-2 text-grey small-height">{{ topUp[info] }}</h5>
+            <h6
+              v-for="requisite in Object.keys(topUp[info])"
+              :key="JSON.stringify(requisite)"
+              class="mb-0 text-grey small-height"
+            >
+              <strong>{{ requisite }}:</strong>
+              {{ topUp[info][requisite] }}
+            </h6>
           </div>
           <button id="close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
@@ -31,25 +38,30 @@ export default {
   },
   data() {
     return {
-      infoList: [
-        "Account Name",
-        "Account number",
-        "Beneficiary Bank",
-        "Company Address",
-        "IBAN",
-        "Payment details",
-        "SWIFT",
-        "Sort code"
-      ]
+      infoList: []
     };
   },
-  created() {},
-  methods: {}
+  created() {
+    const keys = Object.keys(this.topUp);
+    console.log(keys);
+    if (keys[0] !== "TGR Corporate Concierge") {
+      const index = keys.indexOf("TGR Corporate Concierge");
+      this.infoList = this.swap(keys, index, 0);
+    } else {
+      this.infoList = keys;
+    }
+  },
+  methods: {
+    swap(arr, ind1, ind2) {
+      [arr[ind1], arr[ind2]] = [arr[ind2], arr[ind1]];
+      return arr;
+    }
+  }
 };
 </script>
 
 <style scoped>
 .small-height {
-  line-height: 16px;
+  line-height: 22px;
 }
 </style>
