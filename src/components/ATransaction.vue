@@ -13,7 +13,7 @@
           >{{ transaction.description }}</h6>
         </div>
         <div class="amount text-right d-flex align-items-center justify-content-end">
-          <h4 class="m-0">{{ transaction.amount }}</h4>
+          <h4 class="m-0">{{ transactionAmount }}</h4>
         </div>
       </div>
     </div>
@@ -28,6 +28,13 @@ export default {
     }
   },
   computed: {
+    transactionAmount() {
+      const amount = this.separateThousands(this.transaction.amount);
+      const currency = this.transaction.currency;
+      return +this.transaction.amount >= 0
+        ? `+${currency}${amount}`
+        : amount.toString().replace("-", `-${currency}`);
+    },
     iconClass() {
       return this.transaction.isPositive ? "text-coral" : "text-orange";
     },

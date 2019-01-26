@@ -78,10 +78,7 @@ export default {
   mounted() {},
   computed: {
     balanceString() {
-      return `${this.card.symbol} ${this.beautyBalanceAmount}`;
-    },
-    beautyBalanceAmount() {
-      return this.separateThousands(this.card.balance);
+      return `${this.card.symbol} ${this.separateThousands(this.card.balance)}`;
     }
   },
   methods: {

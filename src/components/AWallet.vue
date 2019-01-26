@@ -27,10 +27,9 @@ export default {
   },
   computed: {
     balanceString() {
-      return `${this.wallet.symbol} ${this.beautyBalanceAmount}`;
-    },
-    beautyBalanceAmount() {
-      return this.separateThousands(this.wallet.balance);
+      return `${this.wallet.symbol} ${this.separateThousands(
+        this.wallet.balance
+      )}`;
     }
   },
   methods: {

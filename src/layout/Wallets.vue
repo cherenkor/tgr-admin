@@ -100,12 +100,8 @@ export default {
           this.showLoadMore = true;
           const newTransactions = transactions.map(action => {
             action.isPositive = action.amount >= 0;
-            const currency = this.getCurrencySymbol(action.currency);
+            action.currency = this.getCurrencySymbol(action.currency);
             action.type = action.amount >= 0 ? "In transfer" : "Out transfer";
-            action.amount =
-              action.amount >= 0
-                ? `+${currency}${action.amount}`
-                : action.amount.toString().replace("-", `-${currency}`);
             return action;
           });
 
@@ -144,15 +140,6 @@ export default {
       this.transactions = [];
       this.dates = [];
       this.transactionsPage = 1;
-    },
-    getCurrencySymbol(name) {
-      const list = {
-        EUR: "€",
-        USD: "$",
-        GBP: "£",
-        RUB: "₽"
-      };
-      return list[name] || name;
     }
   }
 };
