@@ -30,35 +30,12 @@ export default {
       return `${this.wallet.symbol} ${this.beautyBalanceAmount}`;
     },
     beautyBalanceAmount() {
-      const amountString = this.wallet.balance.toString();
-      const hasDesimal = amountString.includes(".");
-
-      return this.addSpaces(amountString, hasDesimal);
+      return this.separateThousands(this.wallet.balance);
     }
   },
   methods: {
     selectWallet() {
       this.$emit("selectWallet", this.wallet.id);
-    },
-    addSpaces(numbers, hasDesimal) {
-      let decimals = "";
-      if (hasDesimal) {
-        decimals = numbers.slice(-3);
-        numbers = numbers.slice(0, -3);
-      }
-
-      numbers = numbers
-        .split("")
-        .reverse()
-        .map((num, i) => {
-          if (num === "-" || i === 0) return num;
-          num += i % 3 === 0 ? " " : "";
-          return num;
-        })
-        .reverse()
-        .join("");
-
-      return numbers + decimals;
     }
   }
 };
@@ -83,7 +60,7 @@ export default {
   height: 20px;
 }
 .card-logo img {
-  height: 100%;
+  height: 46px;
 }
 .shadow {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24) !important;

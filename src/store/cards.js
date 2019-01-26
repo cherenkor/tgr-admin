@@ -21,8 +21,8 @@ const actions = {
     })
       .catch(console.log);
   },
-  loadCardTransactions({ commit }, { id, page }) {
-    return axios.get(`${baseURL}/api/client/cards/${id}/transactions?page=${page}&page_limit=20`).then(res => {
+  loadCardTransactions({ commit }, { id, page, currency }) {
+    return axios.get(`${baseURL}/api/client/cards/${id}/transactions?page=${page}&page_limit=20&currency=${currency}`).then(res => {
 
       commit('setCardTransactions', res.data.transactions);
       return res.data.transactions;

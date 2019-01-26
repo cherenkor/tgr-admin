@@ -22,7 +22,7 @@ const ifAuthenticated = (to, from, next) => {
 Vue.use(Router)
 
 const router = new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     { path: "*", redirect: '/' },
     {

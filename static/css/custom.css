@@ -91,3 +91,6 @@ a:hover {
   #loadMore a:active {
     background-color: #f3926c;
   }
+  .overflow-auto {
+      overflow: auto;
+  }

@@ -11,8 +11,6 @@ export default {
 </script>
 
 <style>
-@import "./assets/css/admin.css";
-@import "./assets/css/custom.css";
 body {
   font-family: "Liberation Sans", "Arial", sans-serif !important;
 }

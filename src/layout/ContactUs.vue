@@ -2,12 +2,6 @@
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
       <div class="row">
-        <!-- <div class="col-md-6">
-          <div>
-            <img style="width:100%; height: auto" src="../assets/img/map.png" alt>
-          </div>
-        </div>
-        <br>-->
         <div id="credentials" class="col-md-6">
           <h3 class="mb-4">Contacts</h3>
           <div class="m-3">
@@ -15,7 +9,7 @@
             <a id="phone" href="tel:+442034882840">+44 203 488 2840</a>
           </div>
           <div class="m-3">
-            <h5 class="mb-0">Whats app us:</h5>
+            <h5 class="mb-0">Whatsapp us:</h5>
             <a id="phone" href="tel:+447474466625">+44 747 446 6625</a>
           </div>
           <div class="m-3">

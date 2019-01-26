@@ -1,10 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import axios from "axios"
 import profile from './auth'
 import cards from './cards'
 import wallets from './wallets'
 import auth from './auth'
+
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (401 === error.response.status) {
+        localStorage.removeItem('name');
+        localStorage.removeItem('token');
+        window.location = '/';
+    }
+});
 
 Vue.use(Vuex)
 

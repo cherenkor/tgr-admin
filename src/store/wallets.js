@@ -20,7 +20,6 @@ const actions = {
       .catch(console.log);
   },
   loadWalletTransactions({ commit }, { id, page }) {
-    console.log('id', id, page)
     return axios.get(`${baseURL}/api/client/wallets/${id}/transactions?page=${page}&page_limit=20`).then(res => {
 
       commit('setWalletTransactions', res.data.transactions);

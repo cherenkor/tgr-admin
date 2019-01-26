@@ -7,7 +7,7 @@
         </div>
         <div class="modal-body text-center">
           <div v-if="showSuccessDialog" class="request-dialog mt-2">
-            <h5>Success!</h5>
+            <h5>Request sent</h5>
           </div>
           <div v-else class="success-dialog mt-2">
             <h5>Please click request button and your manager will contact you to confirm the online payments are ON</h5>

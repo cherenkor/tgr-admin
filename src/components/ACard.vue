@@ -20,15 +20,15 @@
     </div>
     <div class="card-actions d-flex justify-content-center">
       <div v-if="card.selected" class="card-actions-btns d-flex justify-content-center">
-        <div class="card-action-btn" data-toggle="modal" data-target="#pin" data-backdrop="static">
-          <font-awesome-icon icon="cog"/>
-        </div>
         <div
           class="card-action-btn"
           data-toggle="modal"
           data-target="#request"
           data-backdrop="static"
         >
+          <font-awesome-icon icon="cog"/>
+        </div>
+        <div class="card-action-btn" data-toggle="modal" data-target="#pin" data-backdrop="static">
           <font-awesome-icon icon="shield-alt"/>
         </div>
         <div
@@ -81,35 +81,12 @@ export default {
       return `${this.card.symbol} ${this.beautyBalanceAmount}`;
     },
     beautyBalanceAmount() {
-      const amountString = this.card.balance.toString();
-      const hasDesimal = amountString.includes(".");
-
-      return this.addSpaces(amountString, hasDesimal);
+      return this.separateThousands(this.card.balance);
     }
   },
   methods: {
     selectCard() {
       this.$emit("selectCard", this.card);
-    },
-    addSpaces(numbers, hasDesimal) {
-      let decimals = "";
-      if (hasDesimal) {
-        decimals = numbers.slice(-3);
-        numbers = numbers.slice(0, -3);
-      }
-
-      numbers = numbers
-        .split("")
-        .reverse()
-        .map((num, i) => {
-          if (num === "-" || i === 0) return num;
-          num += i % 3 === 0 ? " " : "";
-          return num;
-        })
-        .reverse()
-        .join("");
-
-      return numbers + decimals;
     }
   }
 };
@@ -137,7 +114,7 @@ export default {
   height: 20px;
 }
 .card-logo img {
-  height: 100%;
+  height: 46px;
 }
 .card-status {
   justify-content: space-between;

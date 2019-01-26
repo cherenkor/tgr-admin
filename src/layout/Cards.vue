@@ -59,16 +59,14 @@ export default {
       currentCardId: null,
       showLoadMore: false,
       noTransactions: false,
-      loading: true
+      loading: true,
+      currentCurrency: ""
     };
   },
   mounted() {
     this.loadCards().then(cards => {
       this.loadCardTopUp().then(topUp => {
         if (!get(topUp, "data")) return;
-
-        this.currentCardId = cards[0].id;
-        this.loadCardTransactionsHandler(cards[0].id);
 
         this.cards = flatten(
           cards.map((card, i) => {
@@ -87,6 +85,12 @@ export default {
             });
           })
         );
+        this.currentCardId = cards[0].id;
+        this.loadCardTransactionsHandler(
+          this.cards[0].id,
+          false,
+          this.cards[0].currency
+        );
       });
     });
   },
@@ -97,11 +101,10 @@ export default {
       "loadCardTopUp"
     ]),
     selectCard({ id, currency }) {
-      if (this.currentCardId !== id) {
-        this.loadCardTransactionsHandler(id);
-        this.resetSelected();
-      }
+      this.loadCardTransactionsHandler(id, false, currency);
+      this.resetSelected();
       this.currentCardId = id;
+      this.currentCurrency = currency;
 
       this.cards = this.cards.map(card => {
         card.selected = card.id === id && card.currency === currency;
@@ -110,7 +113,11 @@ export default {
     },
     loadMore() {
       this.transactionsPage++;
-      this.loadCardTransactionsHandler(this.currentCardId, true);
+      this.loadCardTransactionsHandler(
+        this.currentCardId,
+        true,
+        this.currentCurrency
+      );
     },
     getTransactions(loadCardTransactionsData, loadMore = false) {
       this.noTransactions = false;
@@ -154,11 +161,12 @@ export default {
         }
       );
     },
-    loadCardTransactionsHandler(cardId, loadMore = false) {
+    loadCardTransactionsHandler(cardId, loadMore = false, currency) {
       this.loading = true;
       const loadCardTransactionsData = {
         id: cardId,
-        page: this.transactionsPage
+        page: this.transactionsPage,
+        currency
       };
       this.getTransactions(loadCardTransactionsData, loadMore).finally(
         () => (this.loading = false)
