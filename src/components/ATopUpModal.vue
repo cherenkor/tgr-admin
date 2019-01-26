@@ -43,7 +43,6 @@ export default {
   },
   created() {
     const keys = Object.keys(this.topUp);
-    console.log(keys);
     if (keys[0] !== "TGR Corporate Concierge") {
       const index = keys.indexOf("TGR Corporate Concierge");
       this.infoList = this.swap(keys, index, 0);
