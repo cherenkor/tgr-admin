@@ -6,7 +6,7 @@
           <font-awesome-icon :class="iconClass" :icon="icon"/>
         </div>
         <div class="mr-4 w-100">
-          <h4 class="m-0">{{ transaction.type }}</h4>
+          <h4 class="m-0">{{ transaction.paymentType }}</h4>
           <h6
             v-if="transaction.description"
             class="m-0 word-break-word"
@@ -29,11 +29,10 @@ export default {
   },
   computed: {
     transactionAmount() {
-      const amount = this.separateThousands(this.transaction.amount);
+      const amount = this.separateThousands(Math.abs(this.transaction.amount));
       const currency = this.transaction.currency;
-      return +this.transaction.amount >= 0
-        ? `+${currency}${amount}`
-        : amount.toString().replace("-", `-${currency}`);
+      const symbol = this.transaction.type === "debit" ? "-" : "+";
+      return `${symbol}${currency}${amount}`;
     },
     iconClass() {
       return this.transaction.isPositive ? "text-coral" : "text-orange";

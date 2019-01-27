@@ -42,6 +42,7 @@ import AWallet from "../components/AWallet";
 import ATransaction from "../components/ATransaction";
 import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
+import { forEach } from "lodash";
 
 export default {
   components: {
@@ -51,7 +52,7 @@ export default {
   data() {
     return {
       wallets: [],
-      transactions: [],
+      transactions: {},
       dates: [],
       transactionsPage: 1,
       currentWalletId: null,
@@ -88,7 +89,6 @@ export default {
       this.loadCardTransactionsHandler(this.currentWalletId, true);
     },
     getTransactions(loadWalletTransactionsData, loadMore = false) {
-      this.noTransactions = false;
       return this.loadWalletTransactions(loadWalletTransactionsData).then(
         transactions => {
           if (!this.dates.length && !transactions.length)
@@ -99,9 +99,10 @@ export default {
           }
           this.showLoadMore = true;
           const newTransactions = transactions.map(action => {
-            action.isPositive = action.amount >= 0;
+            action.isPositive = action.type !== "debit";
             action.currency = this.getCurrencySymbol(action.currency);
-            action.type = action.amount >= 0 ? "In transfer" : "Out transfer";
+            action.paymentType =
+              action.type === "debit" ? "Out transfer" : "In transfer";
             return action;
           });
 
@@ -115,9 +116,20 @@ export default {
             return acc;
           }, {});
 
+          forEach(this.transactions, (transactionVal, transactionKey) => {
+            forEach(transactionsList, (val, key) => {
+              if (transactionKey === key) {
+                transactionsList[key] = [...transactionVal, ...val];
+              }
+            });
+          });
+
           if (loadMore) {
             this.transactions = { ...this.transactions, ...transactionsList };
-            this.dates = [...this.dates, ...dates];
+            this.dates = [
+              ...this.dates,
+              ...dates.filter(date => !this.dates.includes(date))
+            ];
           } else {
             this.transactions = transactionsList;
             this.dates = dates;
@@ -137,6 +149,7 @@ export default {
     },
     resetSelected() {
       this.showLoadMore = false;
+      this.noTransactions = false;
       this.transactions = [];
       this.dates = [];
       this.transactionsPage = 1;

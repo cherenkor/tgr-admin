@@ -39,7 +39,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { flatten, get } from "lodash";
+import { flatten, get, forEach } from "lodash";
 import ACard from "../components/ACard";
 import ATransaction from "../components/ATransaction";
 import moment from "moment";
@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       cards: [],
-      transactions: [],
+      transactions: {},
       topUps: {},
       dates: [],
       transactionsPage: 1,
@@ -101,8 +101,8 @@ export default {
       "loadCardTopUp"
     ]),
     selectCard({ id, currency }) {
-      this.loadCardTransactionsHandler(id, false, currency);
       this.resetSelected();
+      this.loadCardTransactionsHandler(id, false, currency);
       this.currentCardId = id;
       this.currentCurrency = currency;
 
@@ -120,7 +120,6 @@ export default {
       );
     },
     getTransactions(loadCardTransactionsData, loadMore = false) {
-      this.noTransactions = false;
       return this.loadCardTransactions(loadCardTransactionsData).then(
         transactions => {
           if (!this.dates.length && !transactions.length)
@@ -131,14 +130,13 @@ export default {
           }
           this.showLoadMore = true;
           const newTransactions = transactions.map(action => {
-            action.isPositive = action.amount >= 0;
+            action.isPositive = action.type !== "debit";
             action.currency = this.getCurrencySymbol(action.currency);
-            action.type = action.amount >= 0 ? "Top-Up" : "Payment";
+            action.paymentType = action.type === "debit" ? "Payment" : "Top-Up";
             return action;
           });
 
           const dates = [];
-          const newList = [];
           const transactionsList = newTransactions.reduce((acc, el) => {
             const date = moment(el.date).format("MMM Do YY");
             if (!dates.includes(date)) dates.push(date);
@@ -147,9 +145,20 @@ export default {
             return acc;
           }, {});
 
+          forEach(this.transactions, (transactionVal, transactionKey) => {
+            forEach(transactionsList, (val, key) => {
+              if (transactionKey === key) {
+                transactionsList[key] = [...transactionVal, ...val];
+              }
+            });
+          });
+
           if (loadMore) {
             this.transactions = { ...this.transactions, ...transactionsList };
-            this.dates = [...this.dates, ...dates];
+            this.dates = [
+              ...this.dates,
+              ...dates.filter(date => !this.dates.includes(date))
+            ];
           } else {
             this.transactions = transactionsList;
             this.dates = dates;
@@ -170,6 +179,7 @@ export default {
     },
     resetSelected() {
       this.showLoadMore = false;
+      this.noTransactions = false;
       this.transactions = [];
       this.dates = [];
       this.transactionsPage = 1;
