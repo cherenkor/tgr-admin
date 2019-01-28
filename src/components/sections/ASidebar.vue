@@ -60,8 +60,8 @@
     </div>
     <div class="p-4 d-none d-lg-block d-xl-block">
       <a
-        href="https://drive.google.com/file/d/0BymYUHpBDWYZYXo0Vmh4Z1JpU28/view"
-        target="_blank"
+        :href="termsUrl"
+        :target="termsUrl === '#' ? '' : '_blank'"
         class="terms text-white nav-item"
       >Terms & Conditions</a>
     </div>
@@ -70,12 +70,26 @@
 
 <script>
 import { mapActions } from "vuex";
+import axios from "axios";
+import config from "../../config/index.js";
+const { baseURL } = config;
+const token = localStorage.getItem("token", token);
+axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 export default {
   data() {
     return {
-      show: false
+      show: false,
+      termsUrl: "#"
     };
+  },
+  mounted() {
+    axios
+      .get(baseURL + "/api/client/reference")
+      .then(res => {
+        this.termsUrl = res.data.cardholder_agreement_url;
+      })
+      .catch(console.log);
   },
   methods: {
     ...mapActions("auth", ["logout"]),
