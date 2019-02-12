@@ -1,13 +1,16 @@
 <template>
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
-      <div class="d-flex flex-row flex-nowrap overflow-auto">
+      <div v-if="cards && cards.length" class="d-flex flex-row flex-nowrap overflow-auto">
         <a-card
           v-for="(card,i) in cards"
           @selectCard="selectCard"
           :card="{...card, index: i}"
           :key="JSON.stringify(card)"
         />
+      </div>
+      <div v-else class="text-center w-100">
+        <h4>No cards</h4>
       </div>
       <hr>
       <div id="transactions" class="mt-4">
@@ -39,7 +42,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { flatten, get, forEach } from "lodash";
+import { isEmpty, flatten, get, forEach, map, filter, reduce } from "lodash";
 import ACard from "../components/ACard";
 import ATransaction from "../components/ATransaction";
 import moment from "moment";
@@ -63,36 +66,40 @@ export default {
       currentCurrency: ""
     };
   },
-  mounted() {
-    this.loadCards().then(cards => {
-      this.loadCardTopUp().then(topUp => {
-        if (!get(topUp, "data")) return;
+  async mounted() {
+    try {
+      const cards = await this.loadCards();
+      const topUp = await this.loadCardTopUp();
+      if (isEmpty(get(topUp, "data"))) return;
 
-        this.cards = flatten(
-          cards.map((card, i) => {
-            card.selected = i === 0;
-            card.status = "active";
+      this.cards = flatten(
+        map(cards, (card, i) => {
+          card.selected = i === 0;
+          card.status = "active";
 
-            return card.balances.map(balance => {
-              balance.symbol = this.getCurrencySymbol(balance.currency);
-              balance = {
-                ...card,
-                ...balance,
-                topUp: topUp.data
-              };
-              delete balance.balances;
-              return balance;
-            });
-          })
-        );
-        this.currentCardId = cards[0].id;
-        this.loadCardTransactionsHandler(
-          this.cards[0].id,
-          false,
-          this.cards[0].currency
-        );
-      });
-    });
+          return map(card.balances, balance => {
+            balance.symbol = this.getCurrencySymbol(balance.currency);
+            balance = {
+              ...card,
+              ...balance,
+              topUp: topUp.data
+            };
+            delete balance.balances;
+            return balance;
+          });
+        })
+      );
+      this.currentCardId = get(cards, "[0].id");
+      this.loadCardTransactionsHandler(
+        get(this.cards, "[0].id"),
+        false,
+        get(this.cards, "[0].currency")
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading = false;
+    }
   },
   methods: {
     ...mapActions("cards", [
@@ -106,7 +113,7 @@ export default {
       this.currentCardId = id;
       this.currentCurrency = currency;
 
-      this.cards = this.cards.map(card => {
+      this.cards = map(this.cards, card => {
         card.selected = card.id === id && card.currency === currency;
         return card;
       });
@@ -122,14 +129,14 @@ export default {
     getTransactions(loadCardTransactionsData, loadMore = false) {
       return this.loadCardTransactions(loadCardTransactionsData).then(
         transactions => {
-          if (!this.dates.length && !transactions.length)
+          if (!get(this.dates, "length") && !get(transactions, "length"))
             this.noTransactions = true;
-          if (!transactions.length) {
+          if (!get(transactions, "length")) {
             this.showLoadMore = false;
             return;
           }
           this.showLoadMore = true;
-          const newTransactions = transactions.map(action => {
+          const newTransactions = map(transactions, action => {
             action.isPositive = action.type !== "debit";
             action.currency = this.getCurrencySymbol(action.currency);
             action.paymentType = action.type === "debit" ? "Payment" : "Top-Up";
@@ -137,13 +144,17 @@ export default {
           });
 
           const dates = [];
-          const transactionsList = newTransactions.reduce((acc, el) => {
-            const date = moment(el.date).format("MMM Do YY");
-            if (!dates.includes(date)) dates.push(date);
-            if (acc[date]) acc[date] = [...acc[date], el];
-            else acc[date] = [el];
-            return acc;
-          }, {});
+          const transactionsList = reduce(
+            newTransactions,
+            (acc, el) => {
+              const date = moment(el.date).format("MMM Do YY");
+              if (!dates.includes(date)) dates.push(date);
+              if (acc[date]) acc[date] = [...acc[date], el];
+              else acc[date] = [el];
+              return acc;
+            },
+            {}
+          );
 
           forEach(this.transactions, (transactionVal, transactionKey) => {
             forEach(transactionsList, (val, key) => {
@@ -157,7 +168,7 @@ export default {
             this.transactions = { ...this.transactions, ...transactionsList };
             this.dates = [
               ...this.dates,
-              ...dates.filter(date => !this.dates.includes(date))
+              ...filter(dates, date => !this.dates.includes(date))
             ];
           } else {
             this.transactions = transactionsList;
@@ -166,16 +177,20 @@ export default {
         }
       );
     },
-    loadCardTransactionsHandler(cardId, loadMore = false, currency) {
-      this.loading = true;
-      const loadCardTransactionsData = {
-        id: cardId,
-        page: this.transactionsPage,
-        currency
-      };
-      this.getTransactions(loadCardTransactionsData, loadMore).finally(
-        () => (this.loading = false)
-      );
+    async loadCardTransactionsHandler(cardId, loadMore = false, currency) {
+      try {
+        this.loading = true;
+        const loadCardTransactionsData = {
+          id: cardId,
+          page: this.transactionsPage,
+          currency
+        };
+        await this.getTransactions(loadCardTransactionsData, loadMore);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
+      }
     },
     resetSelected() {
       this.showLoadMore = false;

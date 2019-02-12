@@ -1,14 +1,18 @@
 # tgr-admin
 
 > Admin panel for TGR company
-> 
+
+\*\* Testing User:
+
+email: martin.gilmore@tgr.cards
+password: 12345678
 
 ![alt text](https://raw.githubusercontent.com/cherenkor/tgr-admin/master/login.png)
 ![alt text](https://raw.githubusercontent.com/cherenkor/tgr-admin/master/cards.png)
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 

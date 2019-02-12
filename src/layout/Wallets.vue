@@ -1,13 +1,16 @@
 <template>
   <div class="dashboard-finance">
     <div class="container-fluid dashboard-content">
-      <div class="d-flex flex-row flex-nowrap overflow-auto">
+      <div v-if="wallets && wallets.length" class="d-flex flex-row flex-nowrap overflow-auto">
         <a-wallet
           v-for="wallet in wallets"
           @selectWallet="selectWallet"
           :wallet="wallet"
           :key="JSON.stringify(wallet)"
         />
+      </div>
+      <div v-else class="text-center w-100">
+        <h4>No wallets</h4>
       </div>
       <hr>
       <div id="transactions" class="mt-4">
@@ -42,7 +45,7 @@ import AWallet from "../components/AWallet";
 import ATransaction from "../components/ATransaction";
 import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
-import { forEach } from "lodash";
+import { forEach, map, filter, reduce, get } from "lodash";
 
 export default {
   components: {
@@ -61,17 +64,22 @@ export default {
       loading: true
     };
   },
-  mounted() {
-    this.loadWallets().then(wallets => {
-      this.currentWalletId = wallets[0].id;
-      this.loadCardTransactionsHandler(wallets[0].id);
+  async mounted() {
+    try {
+      const wallets = await this.loadWallets();
+      this.currentWalletId = get(wallets, "[0].id");
+      this.loadCardTransactionsHandler(get(wallets, "[0].id"));
 
-      this.wallets = wallets.map((wallet, i) => {
+      this.wallets = map(wallets, (wallet, i) => {
         wallet.selected = i === 0;
         wallet.symbol = this.getCurrencySymbol(wallet.currency);
         return wallet;
       });
-    });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading = false;
+    }
   },
   methods: {
     ...mapActions("wallets", ["loadWallets", "loadWalletTransactions"]),
@@ -79,7 +87,7 @@ export default {
       this.resetSelected();
       this.currentWalletId = walletId;
       this.loadCardTransactionsHandler(walletId);
-      this.wallets = this.wallets.map(wallet => {
+      this.wallets = map(this.wallets, wallet => {
         wallet.selected = wallet.id === walletId;
         return wallet;
       });
@@ -91,14 +99,14 @@ export default {
     getTransactions(loadWalletTransactionsData, loadMore = false) {
       return this.loadWalletTransactions(loadWalletTransactionsData).then(
         transactions => {
-          if (!this.dates.length && !transactions.length)
+          if (!get(this.dates, "length") && !get(transactions, "length"))
             this.noTransactions = true;
-          if (!transactions.length) {
+          if (!get(transactions, "length")) {
             this.showLoadMore = false;
             return;
           }
           this.showLoadMore = true;
-          const newTransactions = transactions.map(action => {
+          const newTransactions = map(transactions, action => {
             action.isPositive = action.type !== "debit";
             action.currency = this.getCurrencySymbol(action.currency);
             action.paymentType =
@@ -108,13 +116,17 @@ export default {
 
           const dates = [];
           const newList = [];
-          const transactionsList = newTransactions.reduce((acc, el) => {
-            const date = moment(el.date).format("MMM Do YY");
-            if (!dates.includes(date)) dates.push(date);
-            if (acc[date]) acc[date] = [...acc[date], el];
-            else acc[date] = [el];
-            return acc;
-          }, {});
+          const transactionsList = reduce(
+            newTransactions,
+            (acc, el) => {
+              const date = moment(el.date).format("MMM Do YY");
+              if (!dates.includes(date)) dates.push(date);
+              if (acc[date]) acc[date] = [...acc[date], el];
+              else acc[date] = [el];
+              return acc;
+            },
+            {}
+          );
 
           forEach(this.transactions, (transactionVal, transactionKey) => {
             forEach(transactionsList, (val, key) => {
@@ -128,7 +140,7 @@ export default {
             this.transactions = { ...this.transactions, ...transactionsList };
             this.dates = [
               ...this.dates,
-              ...dates.filter(date => !this.dates.includes(date))
+              ...filter(dates, date => !this.dates.includes(date))
             ];
           } else {
             this.transactions = transactionsList;
@@ -137,15 +149,19 @@ export default {
         }
       );
     },
-    loadCardTransactionsHandler(cardId, loadMore = false) {
-      this.loading = true;
-      const loadCardTransactionsData = {
-        id: cardId,
-        page: this.transactionsPage
-      };
-      this.getTransactions(loadCardTransactionsData, loadMore).finally(
-        () => (this.loading = false)
-      );
+    async loadCardTransactionsHandler(cardId, loadMore = false) {
+      try {
+        this.loading = true;
+        const loadCardTransactionsData = {
+          id: cardId,
+          page: this.transactionsPage
+        };
+        await this.getTransactions(loadCardTransactionsData, loadMore);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
+      }
     },
     resetSelected() {
       this.showLoadMore = false;
