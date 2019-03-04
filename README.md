@@ -2,8 +2,7 @@
 
 > Admin panel for TGR company
 
-\*\* Testing User:
-
+## Testing User:
 email: martin.gilmore@tgr.cards
 
 password: 12345678
