@@ -4,8 +4,8 @@
 
 \*\* Testing User:
 
-email: martin.gilmore@tgr.cards
-password: 12345678
+** email: martin.gilmore@tgr.cards
+** password: 12345678
 
 ![alt text](https://raw.githubusercontent.com/cherenkor/tgr-admin/master/login.png)
 ![alt text](https://raw.githubusercontent.com/cherenkor/tgr-admin/master/cards.png)
